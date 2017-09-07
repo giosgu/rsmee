@@ -1,0 +1,73 @@
+#perfilWrapper, #perfilWrapperMayor{
+	width: 100%;
+}
+.perfilHeader{
+	height: 100%;
+}
+.perfilPublico-imagen{
+	position: relative;	
+	width: 80px;
+	height: 100%;
+    float: left;
+    margin-right: 30px;
+}
+
+#columnaDatos, #columnaDatosMayor{
+	float: left;
+	height: 100%;
+	width: 100%;
+}
+#datosHeader, #datosHeaderMayor{
+	font-family: "Helvetica Neue",Helvetica,Arial,Verdana,sans-serif;
+	font-weight: bold; 
+    letter-spacing: 0;
+    margin-top: 15px;
+}
+.nombreApellidoHeader{	font-size: 2em; padding-top: 15px; }
+
+.subtituloHeader-Mediano, .subtituloHeader-Grande, .subtituloHeader-Chico{ color: #CCC; }
+.subtituloHeader-Mediano a, .subtituloHeader-Grande a, .subtituloHeader-Chico a{ color: #CCC; text-decoration: none; }
+.subtituloHeader-Mediano a:hover, .subtituloHeader-Grande a:hover, .subtituloHeader-Chico a:hover{ text-decoration: underline; }
+.subtituloHeader-Chico{ font-size: 0.7em; }
+.subtituloHeader-Mediano{ font-size: 1.2em; }
+.subtituloHeader-Grande{ font-size: 1.6em; }
+
+#datosHeader li, #datosHeaderMayor li{
+	padding-left: 110px; /*80+30*/
+}
+
+.separadorHeader{	 padding-top: 15px;}
+
+.tituloDatos{
+	width: 100%;
+	color: #333333; 
+	text-align: center; 
+	font-size: 1.3em; 
+	float: left;
+	margin-bottom: 5px;
+}
+
+.listaDatos{
+	list-style-type: none;
+}
+
+.listaDatosHeader{
+	list-style-type: none;
+	display: inline;
+}
+
+.datos{ 
+	padding-left: 80px; /*tama�o de la foto perfil*/
+}
+
+/* Sobreescribo los estilos del <s:decorate> */
+#columnaDatos .name, #columnaDatosMayor .name{
+	font-family: Helvetica,Arial,sans-serif;
+	color: #333333;
+}
+#columnaDatos .value, #columnaDatosMayor .value{
+	font-weight: bold;
+	color: #1575B0;
+	margin-top: 3px;
+}
+

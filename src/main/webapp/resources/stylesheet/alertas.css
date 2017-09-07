@@ -1,0 +1,12 @@
+#alertaContenedor{ 
+	margin: 5px 15px;
+	line-height: 30px;
+	color: #6E6E6E;
+}
+.tituloAlerta{ 
+	font-size: 1.6em; 
+	font-weight: bold; 
+}
+.parafoAlerta{ 
+	font-size: 1.4em;
+}

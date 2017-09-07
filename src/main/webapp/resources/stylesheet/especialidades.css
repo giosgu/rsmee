@@ -1,0 +1,12 @@
+.especialidad-contenedor{
+	padding-left: 15px;
+	border-bottom: 1px dotted #529aa1;
+}
+
+.lista-especialidades{}
+
+.especialidad-nombre{
+  	font-size: 1.2em;
+    font-weight: bold;
+    margin-right: 15px;
+}

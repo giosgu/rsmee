@@ -1,0 +1,403 @@
+html {
+	overflow-y: scroll;
+}
+
+body {
+	font-size: 12px;
+	margin: 0px;
+}
+
+a img {
+	border: none;
+}
+
+h1 {
+	font-size: 1.6em;
+	margin-top: 0;
+}
+
+input[type=submit], input[type=button], input[type=reset] {
+	font-size: 11px;
+	margin: 5px 5px 5px 0;
+	cursor: pointer;
+}
+
+input[type=text], input[type=password], textarea {
+	font-size: 12px;
+	padding-left: 1px;
+}
+
+select {
+	font-size: 13px;
+}
+
+.tableControl, .actionButtons {
+	width: 100%;
+}
+
+.tableControl a {
+	padding-left: 10px;
+}
+
+.tableControl {
+	text-align: right;
+}
+
+.footer {
+	text-align: center;
+	font-size: 11px;
+	margin-bottom: 10px;
+}
+
+.rich-table {
+	width: 100%;
+}
+
+.body {
+	padding: 10px;
+}
+.message {
+	padding: 5px;
+	list-style: none;
+	border: 0;
+	background-color: #C6E7FF;
+	padding: 10px;
+	color: #000000;
+	margin: 5px 0 8px 0;
+	font-size: 13px;
+	border-radius: 15px;
+	-moz-border-radius: 15px; /* Firefox Ant. */
+	-webkit-border-radius: 15px; /* Safari y Chrome */
+}
+
+.message li {
+	background: no-repeat left center;
+	padding-top: 1px;
+	padding-left: 20px;
+	margin-left: 3px;
+	margin-bottom: 5px;
+}
+
+.message li.infomsg {
+	background-image: url(../img/msginfo.png);
+}
+
+.message li.errormsg {
+	background-image: url(../img/msgerror.png);
+}
+
+.message li.warnmsg {
+	background-image: url(../img/msgwarn.png);
+}
+
+.name {
+	vertical-align: top;
+	width: 115px;
+	float: left;
+	padding: 5px;
+	margin-top: 3px;
+	clear: left;
+}
+
+.value {
+	float: left;
+	padding: 5px;
+}
+
+.valueText, .valueTextChico {
+    float: left;
+    font-size: 12px;
+    margin-top: 7px;
+    padding-left: 5px;
+}
+.valueText { width: 70%; }
+.valueTextChico { width: 50%; }	
+
+.error {
+	float: left;
+	padding: 5px;
+}
+
+.errors {
+	color: #FF0000;
+	vertical-align: middle;
+}
+
+img.errors {
+	padding-right: 5px;
+}
+
+.errors input, .errors textarea, .errors select {
+	border: 1px solid red !important;
+}
+
+.required {
+	color: #FF0000;
+	padding-left: 2px;
+}
+
+.rich-stglpanel-body {
+	overflow: auto;
+}
+
+.alineadorError1 {
+    float: left;
+    width: 350px;
+}
+
+/* the specificity here is necessary to override the defaults */
+/*
+.rich-panel .rich-panel-header,
+.rich-stglpanel .rich-stglpanel-header {
+	padding: 2px 3px;
+}*/
+
+.rich-panel input[type=submit], .rich-panel input[type=button],
+.rich-tabpanel input[type=submit], .rich-tabpanel input[type=button], .rich-tabpanel input[type=reset]{
+	margin-bottom: 0;
+}
+
+.tableControl input[type=submit], .tableControl input[type=button], .tableControl select, .tableControl input[type=reset] {
+	margin: 5px 0 5px 5px;
+}
+
+/* I don't know why this is necessary, but the select is off by a pixel on the top and is padding too much on the left */
+.tableControl select {
+	margin-left: 2px;
+	position: relative;
+	top: 1px;
+}
+
+.actionButtons {
+	padding-left: 1px;
+}
+
+.actionButtons select {
+	margin: 5px 5px 5px 0;
+	vertical-align: bottom;
+}
+
+.rich-toolbar-item a {
+	text-decoration: none;
+}
+
+.rich-toolbar-item a:hover, .rich-ddmenu-label-select {
+	text-decoration: underline;
+}
+
+.rich-toolbar-item .rich-menu-item a:hover {
+	text-decoration: none;
+}
+
+.rich-datalist {
+	list-style: square;
+	margin: 6px 0 1px 0;
+	padding-left: 18px;
+}
+
+.rich-list-item {
+	padding-bottom: 4px;
+}
+
+div.info {
+	font-size: 1.2em;
+}
+
+ul.bullets {
+	list-style: square;
+}
+
+ul.bullets li {
+	padding-bottom: 2px;
+}
+
+td.action {
+	text-align: center;
+	width: 8em;
+	white-space: nowrap;
+}
+
+td.action a {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+table.radio {
+   border: 0;
+}
+
+table.radio td {
+   padding: 0 2px;
+}
+
+table.radio input[type=radio] {
+   vertical-align: bottom;
+}
+
+.imagenUsuario{
+	text-align:center;
+	height: 120px;
+	width: 90px;	
+}
+
+.fondoPanelIzquierdo{
+	background-color: #ffffff;
+}
+
+.fondoPanelCentral{
+	background-color: #ffffff;
+}
+
+.fondoPanelDerecho{
+	background-color: #ffffff;
+}
+.fondoPanelHeader{
+	background-color: #ffffff;
+}
+
+/** LOGIN **/
+.loginPanel{
+	width: 700px;
+	float: left;
+}
+
+.loginForm{
+	float: left;
+	width: 360px;
+	overflow: hidden;
+}
+.registrese {
+    color: #1575b0;
+    float: left;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 15px 0 0 30px;
+    width: 270px;
+}
+.registrese input[type="button"]{
+    margin: 0;
+    margin-top: 10px;
+    width: 260px;
+    padding: 5px;    
+    letter-spacing: 0.15em;
+}
+.botonRegistracion{
+	float: left;
+}
+.botonesLogin{
+	float: left;
+    margin: 10px 0;
+    text-align: left;
+    width: 340px;
+}
+.botonesLogin a{
+	text-align:left;
+	font-size: 13px;
+}
+.botonesLogin .botoneraDerecha{
+	margin: 10px 0 0;
+}
+.linkLogin{
+	margin-bottom: 5px;
+}
+.submitLogin{
+	letter-spacing: 0.1em;
+}
+
+.redSocialLogin{
+	margin-top: 10px;
+	float: left;	
+}
+
+.errorLogin {
+	float: right;	
+	display: block;
+	margin-right: 25px;
+}
+
+.terminosycondiciones{
+	clear: both;
+	padding-top:10px;
+	font-weight: bold;
+}
+.terminosycondiciones input{
+	margin: 0 5px;
+}
+
+.datosRequeridos{
+	clear: both;
+	padding-top: 8px;
+}
+
+.captcha{
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+#paginaError{
+	font-family:Arial, Regular;
+	color:#074D7B;
+    font-size: 16px;
+    padding: 10px;
+}
+
+input[type="reset"] {
+    background-image: url("/rsm/a4j/g/3_3_1.GAorg.richfaces.renderkit.html.GradientA/DATB/eAGbVmha7cvOBAAKswIO");
+    border: 1px solid #074D7B;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 1px 4px;
+}
+
+/*ToolTip*/
+.tooltip {
+    background-color: #FFFFFF;
+    border: 3px solid #074D7B;
+    padding: 10px;
+}
+.tooltip-text {
+    width:350px;
+    height:80px;
+    cursor:arrow;
+    border-width:2px;
+    text-align:center;
+    display: table-cell;
+    vertical-align: middle; 
+}
+
+.leyenda-login {
+    color: #074D7B;
+    float: left;
+    font-size: 13px;
+    font-family: gotham-medium
+   
+}
+
+@font-face {
+    font-family: "gotham-medium";
+    src: url("fonts/gotham-medium.woff") format('woff');
+}
+
+@font-face {
+    font-family: "gotham-light-webfont";
+    src: url("fonts/gotham-light-webfont.woff") format('woff');
+}
+/*
+@font-face {
+    font-family: "gotham-light-webfont";
+    src: url("fonts/gotham-light-webfont.woff") format('woff');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "gotham-light-webfont";
+    src: url("fonts/gotham-light-webfont.woff") format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "gotham-light-webfont";
+    src: url("fonts/gotham-light-webfont.woff") format('woff');
+    font-style: italic;
+}*/

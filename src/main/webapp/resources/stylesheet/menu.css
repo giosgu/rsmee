@@ -1,0 +1,12 @@
+.panelMenuItem, .panelMenuSubItem1{
+	border: 0 none;
+}
+.panelMenuSubItem1{
+	padding-left: 8px;
+}
+.panelMenuItemSeparador{
+	border-top: 1px solid #074D7B;
+}
+.dr-pmenu-selected-item{
+	font-style: normal;	
+}

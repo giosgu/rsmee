@@ -1,0 +1,215 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a="http://richfaces.org/a4j"
+    template="../layout/templateAltaPublico.xhtml" >
+    
+<ui:define name="extraHead">
+	<h:outputScript library="js" name="jquery.js" > </h:outputScript>
+	<h:outputScript library="js" name="jquery-ui.min.js" > </h:outputScript>
+	<h:outputScript library="js/multiselect" name="jquery.multiselect.js" > </h:outputScript>
+	<h:outputScript library="js/multiselect/assets" name="prettify.js" > </h:outputScript>
+
+<!-- 	<a:loadScript src="/js/jquery.js"></a:loadScript>
+	<a:loadScript src="/js/jquery-ui.min.js" ></a:loadScript>
+	<a:loadScript src="/js/multiselect/jquery.multiselect.js"></a:loadScript>
+	<a:loadScript src="/js/multiselect/assets/prettify.js"></a:loadScript>
+ -->
+ 	<h:outputStylesheet library="/stylesheet/multiselect" name="jquery.multiselect.css" ></h:outputStylesheet>
+ 	<h:outputStylesheet library="/stylesheet/multiselect/assets" name="style.css" ></h:outputStylesheet>
+ 	<h:outputStylesheet library="/stylesheet/multiselect/assets" name="prettify.css" ></h:outputStylesheet>
+ 	<h:outputStylesheet library="/stylesheet/jquery-custom-theme" name="jquery-ui-1.8.23.custom.css" ></h:outputStylesheet>
+
+<!-- 
+	<a:loadStyle  src="/stylesheet/multiselect/jquery.multiselect.css"></a:loadStyle> 
+	<a:loadStyle  src="/stylesheet/multiselect/assets/style.css"></a:loadStyle>
+	<a:loadStyle  src="/stylesheet/multiselect/assets/prettify.css"></a:loadStyle>
+	<a:loadStyle src="/stylesheet/jquery-custom-theme/jquery-ui-1.8.23.custom.css"></a:loadStyle>
+ -->
+</ui:define>
+
+
+<ui:define name="body">
+
+	<h:form id="usuario" styleClass="auto">
+	
+        <rich:panel>
+            <s:decorate id="idUsuarioField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.nombre.usuario']}</ui:define>
+                <h:inputText id="idUsuario"
+                		validator="idUsuarioValidator"
+                       required="true"
+                           size="50"
+                      maxlength="50"
+                          value="#{altaPacienteForm.usuarioHome.instance.idUsuario}">
+                    <a:ajax event="onblur" reRender="idUsuarioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+			</s:decorate>
+            
+            <s:decorate id="contraseniaField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.contrasenia']}</ui:define>
+                <h:inputSecret id="contrasenia"
+					value="#{altaPacienteForm.usuarioHome.instance.contrasenia}"
+					validator="contraseniaValidator"
+					size="35"
+					maxlength="30"
+					required="true"
+					redisplay="true">
+                    <a:ajax event="onblur" reRender="contraseniaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputSecret>
+            </s:decorate>
+
+			 <s:decorate id="confirmarContraseniaField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.confirmar.contrasenia']}</ui:define>
+                <h:inputSecret  id="confirmarContrasenia" 
+					value="#{altaPacienteForm.confirmarContrasenia}"
+					size="35"
+					maxlength="30"		                          
+                    validator="contraseniaValidator"
+                    required="true"
+                    redisplay="true">
+                    <a:ajax event="onblur" reRender="confirmarContraseniaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputSecret>
+            </s:decorate>
+            
+            <s:decorate id="nombreField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.nombre']}</ui:define>
+                <h:inputText id="nombre"
+                		required="true"
+                		validator="nombreValidador"
+                           size="30"
+                      maxlength="30"
+                          value="#{altaPacienteForm.usuarioHome.instance.nombre}">
+                    <a:ajax event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="apellidoField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.apellido']}</ui:define>
+                <h:inputText id="apellido" 
+                		required="true"
+                		validator="nombreValidador"
+                           size="30"
+                      maxlength="30"
+                          value="#{altaPacienteForm.usuarioHome.instance.apellido}">
+                    <a:ajax event="onblur" reRender="apellidoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+			<s:decorate id="numeroAfiliadoField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.numero.afiliado']}</ui:define>
+                <h:inputText id="numeroAfiliado"
+                		required="true"
+                		validator="numeroAfiliadoValidator"
+                        size="10"
+                      	maxlength="7"
+						value="#{altaPacienteForm.usuarioHome.instance.numeroAfiliado}">
+                    <a:ajax event="onblur" reRender="numeroAfiliadoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText><h:outputText class="aclaracion" value="(Primeros siete dígitos del número de afiliado)" />
+            </s:decorate>
+   	        <s:decorate id="tipoDocumentoField" template="../layout/editAlineador1.xhtml">
+	           	<ui:define name="label">#{messages['usuario.amb.tipo.documento']}</ui:define>
+		        <h:selectOneMenu id="tipoDocumento"
+		        	styleClass="singleselect"
+		        	required="true"
+		        	value="#{altaPacienteForm.usuarioHome.instance.tipoDocumento}"
+		        	converter="tipoDocumentoConverter" >
+		        	<f:selectItem itemLabel="Seleccione" itemValue=""></f:selectItem>
+					<f:selectItems  value="#{tipoDocumentoList.listAsSelectItem()}" />
+					<a:ajax event="onblur" reRender="tipoDocumentoField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+	       	</s:decorate>
+
+            <s:decorate id="numDocumentoField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.numero.documento']}</ui:define>
+                <h:inputText id="numDocumento"
+                		validator="nroDocumentoValidator"
+                		required="true"
+                           size="30"
+                      maxlength="30"
+                          value="#{altaPacienteForm.usuarioHome.instance.numDocumento}">
+                    <a:ajax event="onblur" reRender="numDocumentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+  
+           	<s:decorate id="fechaNacimientoField" template="../layout/editAlineador1.xhtml">
+                <ui:define name="label">#{messages['usuario.amb.fecha.nacimiento']}<s:span styleClass="required">*</s:span></ui:define>                
+                <h:outputText value=" #{messages['usuario.amb.fecha.nacimiento.dia']}" />
+                <h:inputText id="diaNacimiento"
+                           size="3"
+                      maxlength="2" 
+                          value="#{altaPacienteForm.diaNacimiento}" >
+                </h:inputText>
+                <h:outputText value=" #{messages['usuario.amb.fecha.nacimiento.mes']}" />
+                <h:selectOneMenu id="mesNacimiento" styleClass="singleselect160" 
+                	value="#{altaPacienteForm.mesNacimiento}" >
+                	<f:selectItem id="item00" itemLabel="Seleccione" itemValue="" />
+					<f:selectItem id="item01" itemLabel="Enero" itemValue="01" />
+					<f:selectItem id="item02" itemLabel="Febrero" itemValue="02" />
+					<f:selectItem id="item03" itemLabel="Marzo" itemValue="03" />
+					<f:selectItem id="item04" itemLabel="Abril" itemValue="04" />
+					<f:selectItem id="item05" itemLabel="Mayo" itemValue="05" />
+					<f:selectItem id="item06" itemLabel="Junio" itemValue="06" />
+					<f:selectItem id="item07" itemLabel="Julio" itemValue="07" />
+					<f:selectItem id="item08" itemLabel="Agosto" itemValue="08" />
+					<f:selectItem id="item09" itemLabel="Septiembre" itemValue="09" />
+					<f:selectItem id="item10" itemLabel="Octubre" itemValue="10" />
+					<f:selectItem id="item11" itemLabel="Noviembre" itemValue="11" />
+					<f:selectItem id="item12" itemLabel="Diciembre" itemValue="12" />
+				</h:selectOneMenu>
+                <h:outputText value=" #{messages['usuario.amb.fecha.nacimiento.anio']}" />
+                <h:inputText id="anioNacimiento"
+                           size="5"
+                      maxlength="4"
+                          value="#{altaPacienteForm.anioNacimiento}">
+                </h:inputText>
+            </s:decorate>
+
+			<s:decorate id="generoField" template="../layout/editAlineador1.xhtml">
+				<ui:define name="label">#{messages['usuario.amb.genero']}</ui:define>
+				<h:selectOneMenu id="genero" styleClass="singleselect" 
+					value="#{altaPacienteForm.usuarioHome.instance.genero}" 
+					required="true" converter="generoConverter" >
+					<f:selectItem itemValue="" itemLabel="Seleccione" />
+					<f:selectItems value="#{generoList.listAsSelectItem()}"/>
+					<a:ajax event="onblur" reRender="generoField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>		
+			</s:decorate>
+<!--             <s:decorate id="captcha" template="../layout/editAlineador1.xhtml">
+	        	<ui:define name="label">#{messages['usuario.amb.captcha']}</ui:define>
+				<h:graphicImage styleClass="captcha" value="/seam/resource/captcha" />
+				<h:inputText id="verifyCaptcha" value="#{captcha.response}" required="true">
+					<s:validate />
+				</h:inputText>
+			</s:decorate>
+ 			
+            <s:div styleClass="terminosycondiciones">
+            	<h:selectBooleanCheckbox value="#{altaPacienteForm.aceptoTerminos}" /><h:outputText value=" Acepto los " />
+            	<s:link target="_BLANK" view="/terminosCondiciones.xhtml" value="#{messages['usuario.amb.terminos.y.condiciones']}" propagation="none" />
+            	<s:span styleClass="required">*</s:span>
+            </s:div>
+            
+            <s:div styleClass="datosRequeridos">
+            	<span class="required">* </span><s:span>#{messages['generic.datos.requeridos']}</s:span>
+            </s:div>
+ -->       
+	      	<div class="botoneraDerecha">
+	      		<h:button id="cancelAdd"
+	                   value="Volver"
+	                    view="/login.xhtml" />
+	
+	      		<h:commandButton id="save"
+	                 value="Crear"
+	                action="#{altaPacienteAction.altaPacienteAction()}"
+	              />
+	      	</div>
+
+        </rich:panel>
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>    

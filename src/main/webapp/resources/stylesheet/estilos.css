@@ -1,0 +1,350 @@
+html {
+	overflow-y: scroll;
+}
+
+*{ margin: 0; padding: 0;}
+
+body{
+	background-color: #074D7B;
+	/*font: 62.5%; "Trebuchet MS", sans-serif;*/
+}
+
+h3{
+	color: #1575B0;
+	font-size: 1.1em;
+	font-weight: bold;
+    line-height: 1.5em;
+}
+
+input{ padding: 5px;}
+label{ cursor: pointer;}
+
+#wrapper{
+	width: 1000px;
+	margin: auto;
+	margin-top: 15px;
+	background-color: #FFF;
+	border-radius: 15px;
+}
+#header, #content, #footer{ 
+	width: 100%;
+}
+
+.clear{
+	clear: both;
+	height: 5px;
+	width: 100%;
+}
+
+/* Header */
+#header{
+	height: 120px;
+	background-color: #E1E1E1;
+}
+#opHeader{ text-align: right; float: right; padding: 1px 10px 10px 0; }
+#opHeader img { margin: 0;}
+#opHeaderLeft { text-align: left; float: left; padding-top: 1px; margin-left: 36px; color: #074D7B; font-family: serif; }
+
+/* Content */
+#content{
+	border-top: 1px solid #D0D0D0;
+	width: 100%;
+	min-height: 250px;
+}
+#sidebarLeft{
+	float:left;
+	width: 200px;
+}
+#sidebarLeft .fotoUsuario{
+	height: 128px;
+	width: 128px;
+	margin: 10px 36px;
+}
+#sidebarLeft ul {
+	list-style: none;
+	/*font-weight: bold;*/
+}
+#sidebarLeft li ul {
+	margin: 0px 15px;
+	padding-bottom: 10px;
+}
+#sidebarLeft li li {
+	padding-left: 20px;
+	line-height: 35px;
+	background: url(../img/sidebarLeftLi.png) no-repeat left 12px;
+}
+#sidebarLeft h3 {
+    margin: 12px 0 0 20px;
+}
+#sidebarLeft a, #sidebarLeft .numerosMenu {
+	border: none;
+	text-decoration: none;
+	font-size: 15px;
+	color: #074D7B;
+}
+#sidebarLeft .numerosMenu {
+	font-weight: bold;
+}
+#sidebarLeft a:hover {
+	text-decoration: underline;
+}
+
+#content-center-privada{
+	float: left;
+	width: 520px;
+	margin: 2px;
+}
+#content-center-publica{
+	float: left;
+	width: 720px;
+	margin: 2px;
+}
+
+#content-center-privada #content-center-publica .tabs{
+	margin:10px;
+}
+
+#imgConsultaDesplegable{
+	float: left;
+    padding: 0.6em 1em;
+	cursor: pointer;
+}
+
+.divisorTabs{
+	width: 100%;
+	margin-top:10px;
+	border-top: 2px solid #D0D0D0;
+	border-bottom: 1px solid #D0D0D0;
+	text-align:center;
+	font-weight:bold;
+	font-style:italic
+}
+
+.cabeceraMuro{
+	margin-top:10px;
+	font-weight:bold;
+	font-style:italic
+}
+.datoMuro{
+	font-style:italic;
+	text-decoration: underline;
+}
+
+.footerDatoMuto{
+	display: inline;
+	text-align: right;
+}
+.footerDatoMuto img{
+	display: inline;
+	cursor: pointer;
+}
+
+#mostrarAnteriores{
+	height: 30px;
+	cursor:pointer;
+	margin: 10px 0;
+	text-align: center;
+	text-decoration: underline;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	padding-top: 10px;
+}
+
+#publicidad{
+	width: 270px;
+	float: left;
+	margin-top: 10px;;
+}
+#publicidad .unaPublicidad{
+	width: 266px;
+	height: 100px;
+	margin: 5px 0;
+}
+
+.aclaracion{
+	margin-left: 5px;
+	font-size: 10px;
+}
+
+/* Footer */
+#footer{
+	border-top: 1px solid #D0D0D0;
+	color: #1A1A1A;
+	text-align:center;
+}
+#footer p{
+	padding: 5px 0;
+}
+
+#fotoPerfilForm{
+	text-align: center;
+}
+
+/* Panel Rich */
+.dr-pnl{
+    overflow: auto;
+}
+.dr-table-thead{
+	margin-top: 15px;
+}
+	/*(rich:panel header)*/
+.dr-pnl-h {
+	text-align: center;
+}
+.fileUpload{
+	width: 100%;
+	height: 100px !important;
+	margin: auto;
+	text-align: center;
+}
+	/* (simpleTogglePanel / rich:dataTable header)*/
+.dr-stglpnl-h{
+	text-align: center;
+}
+.dr-stglpnl-b{
+	padding: 10px 15px;
+}
+
+input{
+	background-image: url("/rsm/a4j/g/3_3_1.GAorg.richfaces.renderkit.html.images.SliderFieldGradient/DATB/eAG7t6!r!!!!TAAWOAUm");
+    background-position: left top;
+    background-repeat: repeat-x;
+    border: 1px solid #C0C0C0;
+}
+
+	/*<rich:colum> dr-table-cell*/
+.grilla .dr-table-cell{ border: 1px solid #C0C0C0; }
+
+/*<rich:dataTable> y <rich:colum>*/
+.sinBordeRich .dr-table, .sinBordeRich .dr-table-cell{ border: none; }
+
+/* Estilos Genéricos */
+.floatLeft{ float: left;}
+.floatRigth{ float: right;}
+.textoCentrado{ text-align: center;}
+.inline{ display: inline;}
+.botoneraDerecha{
+	/*padding-bottom: 15px;*/
+	margin: 15px 0;
+	float: right !important;
+	clear: both !important;
+}
+.botoneraDerecha2{
+	margin-bottom: 15px;
+	float: right !important;
+	clear: both !important;
+}
+.separador{
+	clear: both;
+	width: 100%;
+	padding-top: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px dotted #529aa1;
+}
+.recuadroGrisSimple{
+	padding: 10px;
+	border: 1px solid #C0C0C0;
+}
+.recuadroGris{
+	margin: 15px;
+	padding: 10px;
+	text-align: center;
+	border: 1px solid #C0C0C0;
+}
+.widthXCiento{ width: 100%; }
+.width220{	width: 220px;}
+.width250{	width: 250px;}
+.width300{	width: 300px;}
+.width320{	width: 320px;}
+.width600{	width: 600px;}
+.avisoSinContenido{ text-align: center; padding: 10px;}
+.tabulado30{ padding-left: 30px;}
+.tabulado40{ padding-left: 40px;}
+.borderRight{
+	border-right: 1px solid #D0D0D0;
+}
+.colorRed{ color: #FF0000; }
+.colorGreen{ color: #1DCA21; }
+.remarcado{ font-weight:bold; }
+.estiloFechaUno{ 
+	color: #666;
+	font: italic 1em Georgia,Times,Serif;
+}
+.auto{ margin: auto;}
+.max100{ max-height: 100%;}
+
+/* 
+	Vista Datos de Usuarios - Estilos Genéricos
+	(busquedaMedicoAction, solicitudesAction, mensajesForm, 
+		mensajesLeidosForm, mostrarMensaje, misPacientes, misMedicos)
+*/
+#lista-vistaContenedor-recuadroWrapper{ border: 1px solid #11808A;	padding: 10px;}
+#lista-vistaContenedor-wrapper{ padding: 10px;}
+.lista-vistaContenedor-usuarios { list-style: none;}
+.lista-vistaContenedor-datos {
+	/*float: left;*/
+	font-size: 1.1em;
+	line-height: 1.4em;
+	position: relative;
+	overflow: hidden;
+}
+.lista-vistaContenedor-cabecera{
+	line-height: 1.7em;
+	font-size: 1.2em;
+	font-weight: bold;
+	position: relative;	
+}
+.lista-vistaContenedor-imagen {
+	position: relative;
+	width: 60px;
+	float: left;
+	margin: 0 20px 0 0;
+}
+.lista-vistaContenedor-listaDatosContenedor{
+	display: inline;
+	overflow: hidden;
+	font-size: 1.0em;
+	position: relative;
+}
+.lista-vistaContenedor-listaDatos {
+	display: inline;
+	list-style: none;
+	font-style: italic;
+}
+.lista-vistaContenedor-listaDatos li {
+	display: inline; 
+}
+.lista-vistaContenedor-botonera{
+	margin-top: 10px;
+	float: right;
+	font-size: 1.1em;
+	position: relative;
+}
+.lista-vistaContenedor-botonera-links{ margin-top: 18px;}
+.lista-vistaContenedor-botonera-links .link{ margin-right: 10px;}
+.lista-sin-estilos{ list-style: none;}
+
+/* Botones Personalizados */
+.botonIconoEliminar, .botonIconoAceptar, .botonIconoVolver, .botonIconoReset{
+	border: 0 none !important;
+	padding: 0 !important;
+	width: 17px !important;
+	height: 17px !important;
+}
+.botonIconoEliminar{ background: url("../img/eliminar.png") no-repeat scroll 0 0 transparent !important; }
+.botonIconoAceptar{ background: url("../img/true.png") no-repeat scroll 0 0 transparent !important; }
+.botonIconoVolver{ background: url("../img/back.png") no-repeat scroll 0 0 transparent !important; }
+.botonIconoReset{ background: url("../img/clear.png") no-repeat scroll 0 0 transparent !important; }
+
+/* Ayuda Soporte Técnico */
+#introduccionFaq{ font-size: 13px;}
+#panelFaq{ margin-top: 20px;}
+#listaFaq { list-style: circle; padding-left: 15px;}
+#listaFaq h3{ margin-top: 15px; cursor: pointer; }
+.contenidoFaq{ font-style: italic; font-size: 12px; display: none;}
+
+.divLink{
+	color: #074D7B;
+	cursor: pointer;
+	text-decoration: underline;
+}

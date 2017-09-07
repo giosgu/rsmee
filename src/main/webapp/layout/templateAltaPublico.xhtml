@@ -1,0 +1,191 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:a="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"
+   contentType="text/html">
+<html>
+	<h:head>		
+		<title>Austral 360</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="description" content=" Austral 360, La comunidad virtual de Austral Salud. Usted y su médico a un clic de distancia. 
+			Contacte on line a su médico. Agilice sus consultas. Reciba información sobre temas y programas de prevención." /> 
+		
+		<!-- Icons -->
+		<link rel="icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon" />
+		<link rel="address bar icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon"/>
+		
+		<!-- Estilos -->
+		<h:outputStylesheet library="resource:///stylesheet"  name="theme.xcss"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet"  name="theme.xcss"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet"  name="estilos.css"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet"  name="jquery-ui.css"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet"  name="jquery.ui.tooltip.css"></h:outputStylesheet>
+
+<!-- 
+		<a:loadStyle src="resource:///stylesheet/theme.xcss"/>
+		<a:loadStyle src="/stylesheet/theme.css"/>
+		<a:loadStyle src="/stylesheet/estilos.css"/>
+		<a:loadStyle src="/stylesheet/jquery-ui.css"/>
+		<a:loadStyle src="/stylesheet/jquery.ui.tooltip.css"></a:loadStyle>
+ -->		
+		<!-- jQuery / UI (no cambiar por loadStyle) -->
+		<h:outputScript library="js" name="jquery.js" > </h:outputScript>
+		<h:outputScript library="js" name="jquery-ui.min.js" > </h:outputScript>
+		<h:outputScript library="js/multiselect" name="jquery.multiselect.js" > </h:outputScript>
+		<h:outputScript library="js/multiselect/" name="jquery.multiselect.filter.js" > </h:outputScript>
+		<h:outputScript library="js/multiselect/assets" name="prettify.js" > </h:outputScript>
+		
+<!-- 		<a:loadScript src="/js/jquery.js"></a:loadScript>
+		<a:loadScript src="/js/jquery-ui.min.js" ></a:loadScript>
+		<a:loadScript src="/js/multiselect/jquery.multiselect.js"></a:loadScript>
+		<a:loadScript src="/js/multiselect/jquery.multiselect.filter.js"></a:loadScript>
+		<a:loadScript src="/js/multiselect/assets/prettify.js"></a:loadScript>
+ -->		
+		
+		<script language="Javascript">
+			var jQEstilosInput = jQuery.noConflict();
+		</script>
+		
+		<h:outputStylesheet library="/stylesheet/multiselect/assets"  name="style.css"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet/multiselect/assets"  name="prettify.css"></h:outputStylesheet>
+		
+		<h:outputStylesheet library="/stylesheet/multiselect"  name="jquery.multiselect.css"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet/multiselect"  name="jquery.multiselect.filter.css"></h:outputStylesheet>
+		<h:outputStylesheet library="/stylesheet/multiselect/assets"  name="jquery-ui-1.8.23.custom.css"></h:outputStylesheet>
+
+<!-- 		<a:loadStyle  src="/stylesheet/multiselect/assets/style.css"></a:loadStyle>
+		<a:loadStyle  src="/stylesheet/multiselect/assets/prettify.css"></a:loadStyle>
+		
+		<a:loadStyle  src="/stylesheet/multiselect/jquery.multiselect.css"></a:loadStyle> 
+		<a:loadStyle  src="/stylesheet/multiselect/jquery.multiselect.filter.css"></a:loadStyle>
+		<a:loadStyle src="/stylesheet/jquery-custom-theme/jquery-ui-1.8.23.custom.css"></a:loadStyle>
+ -->		
+		<script src="#{request.contextPath}/js/jquery-1.9.1.js"></script>
+		<script src="#{request.contextPath}/js/ui/jquery.ui.core.js"></script>
+		<script language="Javascript">
+			var jQuery = jQuery.noConflict();
+		</script>
+		
+		<script src="#{request.contextPath}/js/ui/jquery.ui.widget.js"></script>
+		<script src="#{request.contextPath}/js/ui/jquery.ui.tooltip.js"></script>
+		<script src="#{request.contextPath}/js/ui/jquery.ui.position.js"></script>
+		
+		<script language="Javascript">		
+		 function cambiarEstilosCombos(){
+			 jQEstilosInput('.multiselect').multiselect().multiselectfilter({
+				label: "Búsqueda",
+				placeholder: "Ingrese el texto", 
+				autoReset: true });
+			 jQEstilosInput('.singleselect').multiselect({
+				multiple: false,
+				header: "Seleccione una opción",
+				noneSelectedText: "Seleccione",
+				selectedList: 1
+			}).multiselectfilter({
+				label: "Búsqueda",
+				placeholder: "Ingrese el texto", 
+				autoReset: true });
+			 jQEstilosInput('.singleselect160').multiselect({
+				minWidth: '160',
+				multiple: false,
+				header: "Seleccione una opción",
+				noneSelectedText: "Seleccione",
+				selectedList: 1
+			});
+		 }
+
+		//botones fileUpload
+		function cambiarEstiloUpload(){
+			jQEstilosInput('.fileStyle').filestyle({
+			     image: "../img/choose-file.png",
+			     imageheight : 30,
+			     imagewidth : 86,
+			     width : 250
+			 });
+		 }
+		
+		//Google Analytics
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-35687174-1']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+		
+		//Ejecutar al cargar
+		jQEstilosInput(document).ready(function(){
+			cambiarEstilosCombos();
+		});
+		</script>
+		
+		<ui:insert name="extraHead"/>
+
+		<style type="text/css">
+			.ui-multiselect-all{display: none;}
+			.ui-multiselect-none{display: none;}
+		</style>
+	</h:head>
+   <body>
+	
+	<div id="wrapper">
+	
+		<div id="header">
+			<h:graphicImage value="/img/bkHeader.jpg" alt="RSM" />
+			<!-- <h:graphicImage value="../img/financiador1.png" alt="Financiador" /> -->
+			
+			<div id="opHeaderLeft">
+				<h:outputText value="#{currentDate}">
+				   <f:convertDateTime type="date" pattern="dd / MM / yyyy" />
+				</h:outputText>
+			</div>
+		</div>
+	
+		<div id="content">
+		
+			<div id="content-center-publica">
+				<div class="body">
+					<!-- 									
+					<s:div styleClass="width600 auto">
+						<h:messages id="messages" globalOnly="true" styleClass="message"
+						   errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"
+						   rendered="#{showGlobalMessages != 'false'}"/>
+						   
+					   <ui:insert name="body"/>
+			      	</s:div>
+					 -->
+				</div>
+			</div>
+		     
+			<!--Publicidad-->
+			<div id="publicidad">
+				<!-- 
+				<div class="unaPublicidad"><a href="#" target="_blank"><h:graphicImage value="/img/publicidad_01.png" height="100" width="266" /></a></div>
+				<div class="unaPublicidad"><a href="#" target="_blank"><h:graphicImage value="/img/publicidad_02.png" height="100" width="266" /></a></div>
+				<div class="unaPublicidad"><a href="http://www.australsalud.com.ar/institucional/novedades/novedad_ampliada.asp?id=158" target="_blank"><h:graphicImage value="/img/avisamed-v01.gif" height="100" width="266" /></a></div>
+				-->
+				<div class="unaPublicidad"><h:graphicImage value="/img/Banner-elija-su-medico_3.gif" height="100" width="266" /></div>
+				<div class="unaPublicidad"><h:graphicImage value="/img/publicidad_pediatria_v2.jpg" height="100" width="266" /></div>
+				<div class="unaPublicidad"><a href="http://www.zonavital.com" target="_blank"><h:graphicImage value="/img/banner_zona_vital.jpg" height="100" width="266" /></a></div>
+				<div class="unaPublicidad"><a href="http://www.octomind.com" target="_blank"><h:graphicImage value="/img/publicidad_octomind.png" height="100" width="266" /></a></div>
+			</div>
+			
+	     </div><!-- /content -->
+	      
+	      
+		<div class="clear"></div>
+		<div id="footer">
+			<p><strong><a href="http://www.octomind.com" target="_blank">Octomind</a></strong> &copy; Copyright 2012. Todos los derechos reservados.</p>
+		</div>
+	
+	</div><!-- /wrapper -->
+   </body>
+</html>
+</f:view>
