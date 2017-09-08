@@ -11,7 +11,12 @@
 <ui:define name="extraHead">
 	<h:outputScript library="js" name="jquery.js" > </h:outputScript>
 	<h:outputScript library="js" name="jquery-ui.min.js" > </h:outputScript>
+	<h:outputScript library="js/multiselect" name="jquery.multiselect.js" > </h:outputScript>
+	<h:outputScript library="js/multiselect/assets" name="prettify.js" > </h:outputScript>
 
+ 	<h:outputStylesheet library="stylesheet/multiselect" name="jquery.multiselect.css" ></h:outputStylesheet>
+ 	<h:outputStylesheet library="stylesheet/multiselect" name="style.css" ></h:outputStylesheet>
+ 	<h:outputStylesheet library="stylesheet/multiselect" name="prettify.css" ></h:outputStylesheet>
  	<h:outputStylesheet library="stylesheet/jquery-custom-theme" name="jquery-ui-1.8.23.custom.css" ></h:outputStylesheet>
 
 </ui:define>
@@ -50,17 +55,30 @@
 		        <p:password id="pwd2" value="#{altaPacienteAction.usuario.contrasenia}" label="Password 2" required="true" />
 		        <p:message for="pwd2" id="msgPwd2" />
 		        
-	    		<p:outputLabel for="nombre" value="Nombre:" indicateRequired="true" />
+		        <p:outputLabel for="nombre" value="Nombre:" indicateRequired="true" />
 	             <p:inputText id="nombre"
 	                 required="true"
 	                 requiredMessage="El valor es requerido"
 	                     size="50"
 	                maxlength="50"
 	                value="#{altaPacienteAction.usuario.nombre}" >
-	                <f:validator for="usuario" validatorId="custom.nombreValidador" />
-	                <p:ajax update="msgNombre" event="keyup" />
+	                <f:validator for="nombre" validatorId="custom.nombreValidador" />
+	                <p:ajax update="msgNombre" event="blur" />
 	             </p:inputText>
 				<p:message for="nombre" id="msgNombre" />
+		        
+		        <p:outputLabel for="apellido" value="Apellido:" indicateRequired="true" />
+	             <p:inputText id="apellido"
+	                 required="true"
+	                 requiredMessage="El valor es requerido"
+	                     size="50"
+	                maxlength="50"
+	                value="#{altaPacienteAction.usuario.apellido}" >
+	                <f:validator for="apellido" validatorId="custom.nombreValidador" />
+	                <p:ajax update="msgApellido" event="blur" />
+	             </p:inputText>
+				<p:message for="apellido" id="msgApellido" />
+		        
 		        
              </h:panelGrid>
      		<p:commandButton id="save"

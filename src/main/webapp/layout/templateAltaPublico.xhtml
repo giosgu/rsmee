@@ -33,7 +33,6 @@
 		<h:outputScript library="js/multiselect/" name="jquery.multiselect.filter.js" > </h:outputScript>
 		<h:outputScript library="js/multiselect/assets" name="prettify.js" > </h:outputScript>
 		
-	
 		<script language="Javascript">
 			var jQEstilosInput = jQuery.noConflict();
 		</script>
@@ -44,6 +43,7 @@
 		<h:outputStylesheet library="stylesheet/multiselect"  name="jquery.multiselect.css"></h:outputStylesheet>
 		<h:outputStylesheet library="stylesheet/multiselect"  name="jquery.multiselect.filter.css"></h:outputStylesheet>
 		<h:outputStylesheet library="stylesheet/jquery-custom-theme"  name="jquery-ui-1.8.23.custom.css"></h:outputStylesheet>
+	
 
 <!-- 		<script src="#{request.contextPath}/js/jquery-1.9.1.js"></script>
 		<script src="#{request.contextPath}/js/ui/jquery.ui.core.js"></script>
@@ -56,46 +56,6 @@
 			var jQuery = jQuery.noConflict();
 		</script>
 		
-		<script language="Javascript">		
-		 function cambiarEstilosCombos(){
-			 jQEstilosInput('.multiselect').multiselect().multiselectfilter({
-				label: "Búsqueda",
-				placeholder: "Ingrese el texto", 
-				autoReset: true });
-			 jQEstilosInput('.singleselect').multiselect({
-				multiple: false,
-				header: "Seleccione una opción",
-				noneSelectedText: "Seleccione",
-				selectedList: 1
-			}).multiselectfilter({
-				label: "Búsqueda",
-				placeholder: "Ingrese el texto", 
-				autoReset: true });
-			 jQEstilosInput('.singleselect160').multiselect({
-				minWidth: '160',
-				multiple: false,
-				header: "Seleccione una opción",
-				noneSelectedText: "Seleccione",
-				selectedList: 1
-			});
-		 }
-
-		//botones fileUpload
-		function cambiarEstiloUpload(){
-			jQEstilosInput('.fileStyle').filestyle({
-			     image: "../img/choose-file.png",
-			     imageheight : 30,
-			     imagewidth : 86,
-			     width : 250
-			 });
-		 }
-		
-	
-		//Ejecutar al cargar
-		jQEstilosInput(document).ready(function(){
-			cambiarEstilosCombos();
-		});
-		</script>
 		
 		<ui:insert name="extraHead"/>
 
@@ -103,6 +63,8 @@
 			.ui-multiselect-all{display: none;}
 			.ui-multiselect-none{display: none;}
 		</style>
+
+
 	</h:head>
    <body>
 	
