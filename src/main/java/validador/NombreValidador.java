@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.validate.ClientValidator;
  
 @Named
-@FacesValidator("util.nombreValidador")
+@FacesValidator("custom.nombreValidador")
 public class NombreValidador implements Validator, ClientValidator {
 	
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -60,7 +60,7 @@ public class NombreValidador implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "util.nombreValidador";
+		return "custom.nombreValidador";
 	}
 	
 }
