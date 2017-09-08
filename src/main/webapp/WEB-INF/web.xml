@@ -4,12 +4,10 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <!-- Ajax4jsf -->
-
-    <context-param>
-        <param-name>org.richfaces.SKIN</param-name>
-        <param-value>emeraldTown</param-value>
-    </context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>omega</param-value>
+	</context-param>
 
 
    <!-- JSF -->
@@ -18,12 +16,12 @@
       <param-value>.xhtml</param-value>
    </context-param>
 
-    <context-param>
+    <context-param> 
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
 
-   <servlet>
+   <servlet> 
       <servlet-name>Faces Servlet</servlet-name>
       <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
       <load-on-startup>1</load-on-startup>
@@ -33,7 +31,26 @@
       <servlet-name>Faces Servlet</servlet-name>
       <url-pattern>*.seam</url-pattern>
    </servlet-mapping>
-
+   
+   <!-- Map these files with JSF -->
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.faces</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+   
+<!-- 
    <security-constraint>
        <display-name>Restrict raw XHTML Documents</display-name>
        <web-resource-collection>
@@ -42,7 +59,7 @@
        </web-resource-collection>
        <auth-constraint/>
    </security-constraint>
-
+ -->
    <session-config>
       <session-timeout>10</session-timeout>
    </session-config>
@@ -50,5 +67,10 @@
     <welcome-file-list>
         <welcome-file>home.xhtml</welcome-file>
     </welcome-file-list>
+
+	<mime-mapping>
+		 <extension>xcss</extension>
+	     <mime-type>text/css</mime-type>
+	</mime-mapping>
 
 </web-app>

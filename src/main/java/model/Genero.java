@@ -28,6 +28,13 @@ public class Genero implements Serializable, ComboEntity {
 	private String codigo;
 	private String descripcion;
 	
+	public Genero(){
+	}
+	
+	public Genero(String codigo){
+		this.codigo = codigo;
+	}
+	
 	@Id
     @Column(name = "codigo", unique = true, nullable = false, columnDefinition="CHAR", length=1)
 	public String getCodigo() {

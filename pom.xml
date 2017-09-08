@@ -27,13 +27,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
+<!--              <dependency>
                 <groupId>org.richfaces</groupId>
                 <artifactId>richfaces-bom</artifactId>
                 <version>${richfaces.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+-->
+
         </dependencies>
     </dependencyManagement>
 
@@ -68,7 +70,7 @@
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+<!--         <dependency>
             <groupId>org.richfaces.ui</groupId>
             <artifactId>richfaces-components-api</artifactId>
             <scope>compile</scope>
@@ -83,6 +85,7 @@
             <artifactId>richfaces-core-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
+  -->    
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -110,8 +113,23 @@
 		    <version>42.1.4.jre6</version>
 		</dependency>
 
-
-
+		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>6.1</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
     </dependencies>
 
     <!-- Tells Maven this project is to use Java 6, also creates the static meta model for the entities -->

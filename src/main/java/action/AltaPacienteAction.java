@@ -2,15 +2,22 @@ package action;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.component.galleria.Galleria;
+
 import model.EstadoUsuario;
+import model.Genero;
 import model.Paciente;
 import model.Rol;
 import model.TipoPaciente;
@@ -20,47 +27,63 @@ import dao.PacienteDao;
 import dao.ParametrosDao;
 import dao.RolDao;
 
+@ConversationScoped
 @Stateful
 @Named
 public class AltaPacienteAction extends AbstractActionBean implements Serializable{
 	
     //@Logger private Log log;
 
-    
+    private Boolean isPrimerRender =Boolean.TRUE;
     private Paciente paciente; 
-    private Usuario usuario;
-    
     @Inject
-    public void init(){   	
+    private Usuario usuario;
+    private String generoId;
+    @Inject
+    ParametrosDao parametroDao;
 
+	public String getGeneroId() {
+		return generoId;
+	}
+	public void setGeneroId(String generoId) {
+		this.generoId = generoId;
+	}
+
+	@Inject
+    private transient Conversation conversation;
+    
+    public void preRenderview(){   	
+    	if(isPrimerRender){
+	    	final FacesContext fc = FacesContext.getCurrentInstance();
+	    	fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  ResourceBundle.getBundle("messages").getString("usuario.amb.mensaje.registracion.bienvenida"), "Sarazasasa"));
+	    	fc.getPartialViewContext().getRenderIds().add("globalMessage");
+	    	isPrimerRender = Boolean.FALSE;
+    	}
+
+    }
+	@PostConstruct
+    public void init(){   	
     	//TODO Agregar captcha
 //    	CaptchaCustomBean captchaCustomBean = (CaptchaCustomBean) Component.getInstance(CaptchaCustomBean.class);
 //    	captchaCustomBean.init();
-    	final FacesContext fc = FacesContext.getCurrentInstance();
-//    	statusMessages.clear();
-//    	statusMessages.addFromResourceBundle("usuario.amb.mensaje.registracion.bienvenida");
-//		FIXME
-        fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario.amb.mensaje.registracion.bienvenida", ""));
-        paciente = new model.Paciente();
         usuario = new model.Usuario();
+        paciente = new Paciente();
     }
     
     public String altaPacienteAction() throws IllegalStateException, SecurityException {
     	
     	usuario.setPaciente(paciente);
 
-//		Usuario administrador = ((UsuarioList) Component.getInstance(UsuarioList.class)).getObjectByID(new Long(1));
-//		usuario.setPrestador(administrador.getPrestador());
 		usuario.setCorreoAlternativo(usuario.getIdUsuario());
 
     	//Imagen Defalult de Perfil
-//    	ParametrosList parametrosList = (ParametrosList) Component.getInstance(ParametrosList.class);
-		ParametrosDao dao = new ParametrosDao();
     	String pathImagenPerfilDefault;
+    	Genero genero = new Genero(generoId);
+    	usuario.setGenero(genero);
     	if(usuario.getGenero().getCodigo().compareToIgnoreCase(model.Genero.STR_MASCULINO)==0)
-    		pathImagenPerfilDefault = dao.descripcionParametroPorId(model.Parametros.IMAGEN_PERFIL_DEFAULT_HOMBRE);
+    		pathImagenPerfilDefault = parametroDao.descripcionParametroPorId(model.Parametros.IMAGEN_PERFIL_DEFAULT_HOMBRE);
     	else
-    		pathImagenPerfilDefault = dao.descripcionParametroPorId(model.Parametros.IMAGEN_PERFIL_DEFAULT_MUJER);
+    		pathImagenPerfilDefault = parametroDao.descripcionParametroPorId(model.Parametros.IMAGEN_PERFIL_DEFAULT_MUJER);
     	
     	usuario.setPathImagenPerfil(pathImagenPerfilDefault);
     	
@@ -82,7 +105,7 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
 			//fc.clear();
 			//statusMessages.addFromResourceBundle(Severity.ERROR, e.getMessage());
 	        fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
-			return "no-persist";
+			return "";
 		}
 		
     	usuario.setActivo(true);
@@ -159,5 +182,14 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
 				Component.getInstance(ParametrosList.class)).descripcionParametroPorId(Parametros.URL_RSM));		
 		
 	}
-  */  
+  */
+    
+    public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 }

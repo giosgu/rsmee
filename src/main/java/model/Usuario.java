@@ -107,6 +107,7 @@ public class Usuario extends FullAuditoryDataEntity implements ComboEntity {
 
 	public Usuario() {
 		super();
+
 	}
 	
 	public Usuario(Long codigo){

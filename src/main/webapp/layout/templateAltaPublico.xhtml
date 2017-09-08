@@ -5,8 +5,7 @@
    xmlns:ui="http://java.sun.com/jsf/facelets"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:a="http://richfaces.org/a4j"
-   xmlns:rich="http://richfaces.org/rich"
+   xmlns:p="http://primefaces.org/ui"
    contentType="text/html">
 <html>
 	<h:head>		
@@ -21,19 +20,12 @@
 		<link rel="address bar icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon"/>
 		
 		<!-- Estilos -->
-		<h:outputStylesheet library="resource:///stylesheet"  name="theme.xcss"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet"  name="theme.xcss"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet"  name="estilos.css"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet"  name="jquery-ui.css"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet"  name="jquery.ui.tooltip.css"></h:outputStylesheet>
 
-<!-- 
-		<a:loadStyle src="resource:///stylesheet/theme.xcss"/>
-		<a:loadStyle src="/stylesheet/theme.css"/>
-		<a:loadStyle src="/stylesheet/estilos.css"/>
-		<a:loadStyle src="/stylesheet/jquery-ui.css"/>
-		<a:loadStyle src="/stylesheet/jquery.ui.tooltip.css"></a:loadStyle>
- -->		
+		<h:outputStylesheet library="stylesheet"  name="theme.xcss"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet"  name="estilos.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet"  name="jquery-ui.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet"  name="jquery.ui.tooltip.css"></h:outputStylesheet>
+
 		<!-- jQuery / UI (no cambiar por loadStyle) -->
 		<h:outputScript library="js" name="jquery.js" > </h:outputScript>
 		<h:outputScript library="js" name="jquery-ui.min.js" > </h:outputScript>
@@ -41,40 +33,28 @@
 		<h:outputScript library="js/multiselect/" name="jquery.multiselect.filter.js" > </h:outputScript>
 		<h:outputScript library="js/multiselect/assets" name="prettify.js" > </h:outputScript>
 		
-<!-- 		<a:loadScript src="/js/jquery.js"></a:loadScript>
-		<a:loadScript src="/js/jquery-ui.min.js" ></a:loadScript>
-		<a:loadScript src="/js/multiselect/jquery.multiselect.js"></a:loadScript>
-		<a:loadScript src="/js/multiselect/jquery.multiselect.filter.js"></a:loadScript>
-		<a:loadScript src="/js/multiselect/assets/prettify.js"></a:loadScript>
- -->		
-		
+	
 		<script language="Javascript">
 			var jQEstilosInput = jQuery.noConflict();
 		</script>
 		
-		<h:outputStylesheet library="/stylesheet/multiselect/assets"  name="style.css"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet/multiselect/assets"  name="prettify.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet/multiselect"  name="style.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet/multiselect"  name="prettify.css"></h:outputStylesheet>
 		
-		<h:outputStylesheet library="/stylesheet/multiselect"  name="jquery.multiselect.css"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet/multiselect"  name="jquery.multiselect.filter.css"></h:outputStylesheet>
-		<h:outputStylesheet library="/stylesheet/multiselect/assets"  name="jquery-ui-1.8.23.custom.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet/multiselect"  name="jquery.multiselect.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet/multiselect"  name="jquery.multiselect.filter.css"></h:outputStylesheet>
+		<h:outputStylesheet library="stylesheet/jquery-custom-theme"  name="jquery-ui-1.8.23.custom.css"></h:outputStylesheet>
 
-<!-- 		<a:loadStyle  src="/stylesheet/multiselect/assets/style.css"></a:loadStyle>
-		<a:loadStyle  src="/stylesheet/multiselect/assets/prettify.css"></a:loadStyle>
-		
-		<a:loadStyle  src="/stylesheet/multiselect/jquery.multiselect.css"></a:loadStyle> 
-		<a:loadStyle  src="/stylesheet/multiselect/jquery.multiselect.filter.css"></a:loadStyle>
-		<a:loadStyle src="/stylesheet/jquery-custom-theme/jquery-ui-1.8.23.custom.css"></a:loadStyle>
- -->		
-		<script src="#{request.contextPath}/js/jquery-1.9.1.js"></script>
+<!-- 		<script src="#{request.contextPath}/js/jquery-1.9.1.js"></script>
 		<script src="#{request.contextPath}/js/ui/jquery.ui.core.js"></script>
+ -->		
+ 		<h:outputScript library="js/ui" name="jquery.ui.core.js" > </h:outputScript>
+ 		<h:outputScript library="js/ui" name="jquery.ui.widget.js" > </h:outputScript>
+
+ 		<h:outputScript library="js/ui" name="jquery.ui.position.js" > </h:outputScript>
 		<script language="Javascript">
 			var jQuery = jQuery.noConflict();
 		</script>
-		
-		<script src="#{request.contextPath}/js/ui/jquery.ui.widget.js"></script>
-		<script src="#{request.contextPath}/js/ui/jquery.ui.tooltip.js"></script>
-		<script src="#{request.contextPath}/js/ui/jquery.ui.position.js"></script>
 		
 		<script language="Javascript">		
 		 function cambiarEstilosCombos(){
@@ -110,16 +90,7 @@
 			 });
 		 }
 		
-		//Google Analytics
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-35687174-1']);
-		_gaq.push(['_trackPageview']);
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-		
+	
 		//Ejecutar al cargar
 		jQEstilosInput(document).ready(function(){
 			cambiarEstilosCombos();
@@ -149,18 +120,16 @@
 		</div>
 	
 		<div id="content">
-		
 			<div id="content-center-publica">
-				<div class="body">
-					<!-- 									
-					<s:div styleClass="width600 auto">
-						<h:messages id="messages" globalOnly="true" styleClass="message"
-						   errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"
-						   rendered="#{showGlobalMessages != 'false'}"/>
-						   
-					   <ui:insert name="body"/>
-			      	</s:div>
-					 -->
+				<div class="body" >
+					
+					<div class="width600 auto">
+						<f:metadata>
+						  <f:event type="preRenderView" listener="#{altaPacienteAction.preRenderview}"/>
+						</f:metadata>
+						<p:messages id="globalMessage" globalOnly="true"  />
+						<ui:insert name="body"/>
+					</div>	
 				</div>
 			</div>
 		     
