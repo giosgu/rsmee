@@ -39,7 +39,10 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
     @Inject
     private Usuario usuario;
     private String generoId;
-    @Inject
+    private String tipoDocumentoId;
+    private String fechaNacimiento;
+
+	@Inject
     ParametrosDao parametroDao;
 
 	public String getGeneroId() {
@@ -190,6 +193,19 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+    public String getTipoDocumentoId() {
+		return tipoDocumentoId;
+	}
+	public void setTipoDocumentoId(String tipoDocumentoId) {
+		this.tipoDocumentoId = tipoDocumentoId;
+	}
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 }
