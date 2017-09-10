@@ -145,5 +145,25 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     	}
 	    return fecha;
 	}
-	
+
+	//Saber mi edad
+	public static int edadSegunFechaNac(Date fecha_nac) {
+	    Date fechaActual = new Date();
+	    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+	    String hoy = formato.format(fechaActual);
+	    String[] dat1 = formato.format(fecha_nac).split("/");
+	    String[] dat2 = hoy.split("/");
+	    int anios = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
+	    int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
+	    if (mes < 0) {
+	      anios = anios - 1;
+	    } else if (mes == 0) {
+	      int dia = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
+	      if (dia < 0) {
+	        anios = anios - 1;
+	      }
+	    }
+	    return anios;
+	}
+
 }

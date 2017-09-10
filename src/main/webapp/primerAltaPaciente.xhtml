@@ -13,34 +13,48 @@
             <div class="ui-g-12">
                 <div class="card">
 					<h1>Registración</h1>
-                    <h:panelGrid id="grid" columns="3" cellpadding="5" style="margin-top:20px">
-						    <p:outputLabel for="idUsuario" value="Nombre de Usuario:" indicateRequired="true" />
-						    <p:inputText id="idUsuario"
+					    <p:tooltip />
+                        <p:messages showDetail="true" autoUpdate="true" closable="true" globalOnly="true" />
+					
+                     <h:panelGrid id="grid" columns="2" cellpadding="5" style="margin-top:20px">
+						   <p:inputText id="idUsuario"
 			                 required="true"
 			                 requiredMessage="El valor es requerido"
-			                 size="50"
+			                 size="25"
 			                 maxlength="50"
-			                 placeholder="Ingrese su email..."
+			                 placeholder="Nombre de usuario - Email (*)"
 			                 value="#{altaPacienteAction.usuario.idUsuario}" >
 			                <f:validator for="idUsuario" validatorId="custom.idUsuarioValidator" />
-			                <p:ajax update="msgIsUsuario" event="keyup" />
-			                <p:ajax update="idUsuario" event="keyup" />
+			                <p:ajax update="msgIsUsuario" event="blur" />
+			                <p:ajax update="idUsuario" event="blur" />
 			             </p:inputText>
 			             <p:message for="idUsuario" id="msgIsUsuario" />
 			             
-    		             <p:outputLabel for="pwd1" value="Contraseña:" />
-				        <p:password id="pwd1" feedback="true" value="#{altaPacienteAction.usuario.contrasenia}" match="pwd2" label="Password 1" required="true" />
+				        <p:password id="pwd1" 
+				        	placeholder="Contraseña (*)" 
+				        	value="#{altaPacienteAction.usuario.contrasenia}" 
+				        	match="pwd2" 
+				        	label="Password 1"
+				        	size="25"
+				        	maxlength="12" 
+				        	required="true" />
 				 		<p:message for="pwd1" id="msgPwd1" />
-				        <p:outputLabel for="pwd2" value="Confirmar Contraseña" />
-				        <p:password id="pwd2" feedback="true" value="#{altaPacienteAction.usuario.contrasenia}" label="Password 2" required="true" />
+
+				        <p:password id="pwd2" 
+				        	placeholder="Confirmar Contraseña (*)" 
+				        	value="#{altaPacienteAction.confirmarContrasenia}" 
+				        	label="Password 2"
+				        	size="25"
+				        	maxlength="12" 
+				        	required="true" />
 				        <p:message for="pwd2" id="msgPwd2" />
 			             
 			             
-			             <p:outputLabel for="nombre" value="Nombre:" indicateRequired="true" />
 			             <p:inputText id="nombre"
 			                 required="true"
+			                 placeholder="Nombre (*)"
 			                 requiredMessage="El valor es requerido"
-			                     size="50"
+			                     size="25"
 			                maxlength="50"
 			                value="#{altaPacienteAction.usuario.nombre}" >
 			                <f:validator for="nombre" validatorId="custom.nombreValidador" />
@@ -49,11 +63,11 @@
 			             </p:inputText>
 						<p:message for="nombre" id="msgNombre" />
 				        
-				        <p:outputLabel for="apellido" value="Apellido:" indicateRequired="true" />
 			             <p:inputText id="apellido"
+			             	placeholder="Apellido(*)"
 			                 required="true"
 			                 requiredMessage="El valor es requerido"
-			                     size="50"
+			                     size="25"
 			                maxlength="50"
 			                value="#{altaPacienteAction.usuario.apellido}" >
 			                <f:validator for="apellido" validatorId="custom.nombreValidador" />
@@ -62,7 +76,6 @@
 			             </p:inputText>
 						<p:message for="apellido" id="msgApellido" />
 			             
-			             <p:outputLabel for="numeroAfiliado" value="Número Afiliado:" indicateRequired="true" />
 			             <p:inputText id="numeroAfiliado"
                 			required="true"
                 			placeholder="Siete dígitos"
@@ -75,14 +88,14 @@
 			                <p:ajax update="numeroAfiliado" event="blur" />
 						</p:inputText>		             
 			            <p:message for="numeroAfiliado" id="msgNumeroAfiliado" />
-			            
-			            <p:outputLabel for="tipoDocumento" value="Tipo Documento:" indicateRequired="true" />
+			             
+			             
 			            <p:selectOneMenu id="tipoDocumento" 
 			            	value="#{altaPacienteAction.tipoDocumentoId}" 
 			            	required="true"
 			            	requiredMessage="El valor es requerido" 
 			            	style="margin-bottom:10px;">
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItem itemLabel="Tipo Documento (*)" itemValue="" />
                             <f:selectItem itemLabel="DNI" itemValue="1" />
                             <f:selectItem itemLabel="CI" itemValue="2" />
                             <f:selectItem itemLabel="LC" itemValue="3" />
@@ -93,21 +106,22 @@
                         </p:selectOneMenu>
 			            <p:message for="tipoDocumento" id="msgTipoDocumento" />
 			            
-			            <p:outputLabel for="numDocumento" value="Número de Documento" indicateRequired="true" />
-			            <p:inputText id="numDocumento"
-                			required="true"
-                			requiredMessage="El valor es requerido"
-	                        size="30"
-	                      	maxlength="30"
+			            <p:inputMask id="numDocumento" 
+				            mask="99999999"
+				            placeholder="Número de Documento (*)"
+				            required="true"
+				            requiredMessage="El valor es requerido"
+		                    size="25"
+		                    maxlength="12"
 							value="#{altaPacienteAction.usuario.numDocumento}">
 							<f:validator for="numDocumento" validatorId="javax.faces.Required" />
 							<p:ajax update="msgNumDocumento" event="blur"  />
 							<p:ajax update="numDocumento" event="blur"  />
-						</p:inputText>
+			            </p:inputMask>
 						<p:message for="numDocumento" id="msgNumDocumento" />
 						
-						<p:outputLabel for="fechaNacimiento" value="Fecha Nacimiento"/>
-                        <p:inputMask id="fechaNacimiento" 
+                        <p:inputMask id="fechaNacimiento"
+                        	placeholder="Fecha Nacimiento" 
                         	mask="99/99/9999"
                         	required="true"
                         	requiredMessage="El valor es requerido"
@@ -118,13 +132,12 @@
                         </p:inputMask>
 						<p:message for="fechaNacimiento" id="msgFechaNacimiento" />
 						
-						<p:outputLabel for="genero" value="Sexo:" indicateRequired="true" />
 			            <p:selectOneMenu id="genero" 
 			            	value="#{altaPacienteAction.generoId }" 
 			            	required="true"
 			            	requiredMessage="El valor es requerido" 
 			            	style="margin-bottom:10px;">
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItem itemLabel="Sexo (*) " itemValue="" />
                             <f:selectItem itemLabel="Femenino" itemValue="F" />
                             <f:selectItem itemLabel="Masculino" itemValue="M" />
 						<f:validator for="tipoDocumento" validatorId="javax.faces.Required" />
@@ -133,7 +146,10 @@
                         </p:selectOneMenu>
 			            <p:message for="genero" id="msgGenero" />
 						
-						<p:selectBooleanCheckbox required="true" label="Acepto los términos y condiciones"  layout="responsive" /> 
+						<p:selectBooleanCheckbox required="true" 
+							label="Acepto los términos y condiciones"
+							value="#{altaPacienteAction.aceptoTerminos}"  
+							layout="responsive" /> 
 						<p:link value="Acepto los términos y condiciones" outcome="404.xhtml" target="_BLANK" />
 
                     <f:facet name="footer">
@@ -144,7 +160,12 @@
                     	</p:row>
                     	<p:row>
                     		<p:column colspan="1"  >
-								<p:commandButton type="button" value="Aceptar" icon="fa fa-check" />
+						     		<p:commandButton id="save2"
+						               value="Aceptar"
+						               action="#{altaPacienteAction.altaPacienteAction}"
+						               inmediate="true"
+						               image="fa fa-check"
+						               validateClient="true" />
                     		</p:column>
                     	</p:row>
                     </f:facet>
@@ -156,5 +177,4 @@
         </div>
         </h:form>
     </ui:define>
-
 </ui:composition>

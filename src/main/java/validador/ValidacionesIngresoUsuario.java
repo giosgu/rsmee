@@ -3,6 +3,9 @@
  * */
 package validador;
 
+import java.io.Serializable;
+
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import model.Usuario;
@@ -16,8 +19,12 @@ import excepcion.ValidationServiceException;
 //import com.octomind.rsm.home.usuario.UsuarioList;
 //import com.octomind.rsm.model.Usuario;
 //
-public class ValidacionesIngresoUsuario implements Validador {
-
+public class ValidacionesIngresoUsuario implements Validador, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4997162544619287773L;
+	@Inject
 	private EntityManager entityManager;
 	protected model.Usuario usuario;
 //	protected UsuarioDa usuarioList;
@@ -27,6 +34,8 @@ public class ValidacionesIngresoUsuario implements Validador {
     private String mesNacimiento;
     private String anioNacimiento;
 	
+    private String fechaNacimiento;
+    
 	private String confirmarContrasenia;
 	
 	//Aceptó términos y condiciones
@@ -49,37 +58,29 @@ public class ValidacionesIngresoUsuario implements Validador {
 		
 		//Validacion fecha nacimiento
 		ValidacionesFormatoFechaNacimiento validacionesFormatoFechaNacimiento = new ValidacionesFormatoFechaNacimiento();
-		validacionesFormatoFechaNacimiento.setDiaNacimiento(diaNacimiento);
-		validacionesFormatoFechaNacimiento.setMesNacimiento(mesNacimiento);
-		validacionesFormatoFechaNacimiento.setAnioNacimiento(anioNacimiento);
+		validacionesFormatoFechaNacimiento.setFechaNacimientoS(fechaNacimiento);
+		
 		try {
 			validacionesFormatoFechaNacimiento.validate();
 		} catch (ValidationServiceException e) {
 			throw new ValidationServiceException(e.getMessage());
 		}
 		
-		//FIXME descomentar y arreglar el validados
-//		UsuarioHome usuarioHome = (UsuarioHome) Component.getInstance(UsuarioHome.class);
-//		usuarioHome.getInstance().setFechaNacimiento(validacionesFormatoFechaNacimiento.getFechaNacimientoValidada());
-//		usuario.setFechaNacimiento(validacionesFormatoFechaNacimiento.getFechaNacimientoValidada());
-//
-//		
-//		ValidacionesUsuario validacionesUsuario = new ValidacionesUsuario();
-//		validacionesUsuario.setUsuario(getUsuario());
-//		try {
-//			validacionesUsuario.validate();
-//		} catch (ValidationServiceException e) {
-//			throw new ValidationServiceException(e.getMessage());
-//		}
+		usuario.setFechaNacimiento(validacionesFormatoFechaNacimiento.getFechaNacimientoValidada());
+		usuario.setFechaNacimiento(validacionesFormatoFechaNacimiento.getFechaNacimientoValidada());
+
+		
+		ValidacionesUsuario validacionesUsuario = new ValidacionesUsuario();
+		validacionesUsuario.setUsuario(getUsuario());
+		try {
+			validacionesUsuario.validate();
+		} catch (ValidationServiceException e) {
+			throw new ValidationServiceException(e.getMessage());
+		}
+
 
 	}
 
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -124,6 +125,14 @@ public class ValidacionesIngresoUsuario implements Validador {
 	}
 	public void setAceptoTerminos(boolean aceptoTerminos) {
 		this.aceptoTerminos = aceptoTerminos;
+	}
+
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 }

@@ -15,6 +15,12 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Afiliado implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8027098420964424187L;
+
+
 	public Afiliado(){
 		super();
 	}

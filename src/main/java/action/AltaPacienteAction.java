@@ -14,18 +14,20 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.component.galleria.Galleria;
-
 import model.EstadoUsuario;
 import model.Genero;
 import model.Paciente;
 import model.Rol;
+import model.TipoDocumento;
 import model.TipoPaciente;
 import model.Usuario;
 import security.PasswordManager;
+import validador.ValidacionesIngresoPaciente;
 import dao.PacienteDao;
 import dao.ParametrosDao;
 import dao.RolDao;
+import dao.UsuarioDao;
+import excepcion.ValidationServiceException;
 
 @ConversationScoped
 @Stateful
@@ -34,17 +36,32 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
 	
     //@Logger private Log log;
 
-    private Boolean isPrimerRender =Boolean.TRUE;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8712364822892370919L;
+	private Boolean isPrimerRender =Boolean.TRUE;
     private Paciente paciente; 
     @Inject
     private Usuario usuario;
     private String generoId;
     private String tipoDocumentoId;
     private String fechaNacimiento;
-
+    private String confirmarContrasenia;
+    private boolean aceptoTerminos;
 	@Inject
     ParametrosDao parametroDao;
-
+	@Inject
+	InvitacionPacienteAction invitacionPaciente;
+	@Inject
+	PacienteDao pacienteDao;
+	@Inject
+	UsuarioDao usuarioDao;
+	@Inject
+	ValidacionesIngresoPaciente validacionesUsuario;
+	@Inject
+	RolDao rolList;
+	
 	public String getGeneroId() {
 		return generoId;
 	}
@@ -76,8 +93,12 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
     public String altaPacienteAction() throws IllegalStateException, SecurityException {
     	
     	usuario.setPaciente(paciente);
-
 		usuario.setCorreoAlternativo(usuario.getIdUsuario());
+
+		Usuario administrador = usuarioDao.getObjectByID(new Long(1));
+
+		//modificaciones task id 30 - simplificar alta pacientes
+		usuario.setPrestador(administrador.getPrestador());
 
     	//Imagen Defalult de Perfil
     	String pathImagenPerfilDefault;
@@ -89,24 +110,16 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
     		pathImagenPerfilDefault = parametroDao.descripcionParametroPorId(model.Parametros.IMAGEN_PERFIL_DEFAULT_MUJER);
     	
     	usuario.setPathImagenPerfil(pathImagenPerfilDefault);
-    	
-		validador.ValidacionesIngresoUsuario validacionesUsuario = new validador.ValidacionesIngresoPaciente();
-//		validacionesUsuario.setEntityManager(getEntityManager());
-//		validacionesUsuario.setUsuario(usuarioHome.getInstance());
-//		validacionesUsuario.setUsuarioList((UsuarioList) Component.getInstance(UsuarioList.class));
-//		validacionesUsuario.setConfirmarContrasenia(altaPacienteForm.getConfirmarContrasenia());	
-//		validacionesUsuario.setDiaNacimiento(altaPacienteForm.getDiaNacimiento());
-//		validacionesUsuario.setMesNacimiento(altaPacienteForm.getMesNacimiento());
-//		validacionesUsuario.setAnioNacimiento(altaPacienteForm.getAnioNacimiento());
-//		validacionesUsuario.setAceptoTerminos(altaPacienteForm.isAceptoTerminos());
+    	usuario.setTipoDocumento(new TipoDocumento(Long.parseLong(tipoDocumentoId)));
+
+		validacionesUsuario.setUsuario(usuario);
+		validacionesUsuario.setConfirmarContrasenia(confirmarContrasenia);	
+		validacionesUsuario.setFechaNacimiento(fechaNacimiento);
+		validacionesUsuario.setAceptoTerminos(aceptoTerminos);
 		try {
 			validacionesUsuario.validate();
 		} catch (excepcion.ValidationServiceException e) {
-//			FIXME
 			final FacesContext fc = FacesContext.getCurrentInstance();
-	        fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario.amb.mensaje.registracion.bienvenida", ""));
-			//fc.clear();
-			//statusMessages.addFromResourceBundle(Severity.ERROR, e.getMessage());
 	        fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
 			return "";
 		}
@@ -115,35 +128,30 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
     	usuario.setNumeroAfiliado("0"+usuario.getNumeroAfiliado());
 
 		//Genero invitacion
-    	//TODO generar invitacion
-//		InvitacionPacienteAction invitacionPaciente = (InvitacionPacienteAction) Component.getInstance(InvitacionPacienteActionBean.class);
-//		try{
-//			usuarioHome.getInstance().setEstadoUsuario(invitacionPaciente.crearInvitacion(usuarioHome.getInstance()));			
-//		}catch (ValidationServiceException e) {
-//			usuarioHome.getInstance().setNumeroAfiliado(
-//					usuarioHome.getInstance().getNumeroAfiliado().substring(1, usuarioHome.getInstance().getNumeroAfiliado().length())
-//			);//saco el 0 para mostrar
-//			statusMessages.clear();
-//			statusMessages.addFromResourceBundle(Severity.ERROR, e.getMessage());
-//			return "no-persist";
-//		}
+		try{
+			usuario.setEstadoUsuario(invitacionPaciente.crearInvitacion(usuario));			
+		}catch (ValidationServiceException e) {
+			usuario.setNumeroAfiliado(
+					usuario.getNumeroAfiliado().substring(1, usuario.getNumeroAfiliado().length())
+			);//saco el 0 para mostrar
+			final FacesContext fc = FacesContext.getCurrentInstance();
+	        fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+			return "no-persist";
+		}
 		
 		//Pasó la validación = Aceptó Términos y Condiciones
 		usuario.setAceptoTerminosCondiciones(true);
 		
-    	RolDao rolList = new RolDao();
+    	
     	Set<Rol> roles = new HashSet<Rol>();
     	roles.add(rolList.getObjectByID(Rol.PACIENTE));
     	usuario.setRoles(roles);
   		PasswordManager.encryptPassword(usuario);
   		paciente.setTipoPaciente(TipoPaciente.ADULTO);
 
-  		PacienteDao pacienteDao = new PacienteDao();
-		pacienteDao.save(paciente);
-	
-		//FIXME deberia ser usuario dao
-		pacienteDao.save(usuario);
-//		agregar la notificacion
+		pacienteDao.persist(paciente);
+		usuarioDao.persist(usuario);
+//		TODO agregar la notificacion
 		//notificarAltaPaciente(usuario);//Notifico
 		
 		//Mensaje para el paciente
@@ -152,11 +160,18 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
 		if(codEstadoUsuarioResultado.equals(EstadoUsuario.ESTADO_PRE_ACEPTADO.getCodigo())){
 			//FIXME statusMessages.clear();
 		}else if(codEstadoUsuarioResultado.equals(EstadoUsuario.ESTADO_PENDIENTE.getCodigo())){
-			//TODO  usuarioHome.registracionUsuario();
-//	        log.info("altaPacienteAction.altaPacienteAction() = estadoPendiente");
+	    	final FacesContext fc = FacesContext.getCurrentInstance();
+	    	fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  
+	    			usuario.getNombre()+" "+usuario.getApellido()+", tu usuario ha sido creado con éxito.",
+	    			""));
+	    	fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  
+	    			"En las próximas horas estaremos validando tu suscripción y recibirás un e-mail confirmando la misma.",
+	    			""));
+
 			return "estadoPendiente";
 		}
 //		log.info("altaPacienteAction.altaPacienteAction() = estadoPreAceptado");
+
     	return "estadoPreAceptado";
 	}    
 
@@ -206,6 +221,18 @@ public class AltaPacienteAction extends AbstractActionBean implements Serializab
 	}
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	public String getConfirmarContrasenia() {
+		return confirmarContrasenia;
+	}
+	public void setConfirmarContrasenia(String confirmarContrasenia) {
+		this.confirmarContrasenia = confirmarContrasenia;
+	}
+	public boolean isAceptoTerminos() {
+		return aceptoTerminos;
+	}
+	public void setAceptoTerminos(boolean aceptoTerminos) {
+		this.aceptoTerminos = aceptoTerminos;
 	}
 
 }

@@ -67,6 +67,7 @@ public abstract class BaseDao<E, PK extends Serializable> implements Serializabl
      * @param entity Entity to save.
      * @return Returns the modified entity.
      */
+    @Deprecated
     public E save(E entity) {
         checkProperInit();
         if (isPkSet(entity)) {
@@ -77,6 +78,27 @@ public abstract class BaseDao<E, PK extends Serializable> implements Serializabl
         }
     }
 
+    //todo ver bien cómo arreglar esto
+    public E merge(E entity){
+    	return em.merge(entity);
+    }
+    
+    public E persist(E entity){
+    	em.persist(entity);
+    	return entity;
+    }
+    /*
+    public E persist(E entity) {
+        checkProperInit();
+        if (isPkSet(entity)) {
+            return em.merge(entity);
+        } else {
+            em.persist(entity);
+            return entity;
+        }
+    }
+*/
+    
     /**
      * {@link #save(Object)}s the given entity and flushes the persistence context afterwards.
      *
@@ -351,4 +373,8 @@ public abstract class BaseDao<E, PK extends Serializable> implements Serializabl
 		return entityType;
 	}
 
+	public CriteriaQuery<E> getCriteriaQuery(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		return cb.createQuery(entityType);
+	}
 }

@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 import model.Paciente;
 
-public class PacienteDao extends BaseDao {
+public class PacienteDao extends BaseDao<Paciente, Long> {
 
 	/**
 	 * 
@@ -13,6 +13,7 @@ public class PacienteDao extends BaseDao {
 	private static final long serialVersionUID = 5899269054916974891L;
 
 	public PacienteDao(){
+		super();
 		this.entityType = Paciente.class;
 		this.idType = Long.class;
 	}

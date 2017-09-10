@@ -1,5 +1,6 @@
 package model;
 
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,6 +23,11 @@ import javax.validation.constraints.Size;
 @Table(name="acceso_usuario")
 public class AccesoUsuario implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8211880287592813713L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="AccesoUsuarioSeqOra")
 	@SequenceGenerator(name="AccesoUsuarioSeqOra",sequenceName="ACCESO_USUARIO_SEQ", allocationSize=1)

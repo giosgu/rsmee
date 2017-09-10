@@ -20,6 +20,14 @@ public class TipoDocumento extends CreateAuditoryDataEntity implements ComboEnti
 	private Long codigo;
 	private String descripcion;
 	
+	public TipoDocumento(){
+		super();
+	}
+	
+	public TipoDocumento(Long codigo){
+		this.codigo = codigo;
+	}
+	
     @Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="TipoDocumentoSeqOra")
     @SequenceGenerator(name="TipoDocumentoSeqOra",sequenceName="TIPO_DOCUMENTO_SEQ", allocationSize=1)
