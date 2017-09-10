@@ -53,8 +53,8 @@ public class ValidacionesIngresoUsuario implements Validador, Serializable{
 //			throw new ValidationServiceException("El Nombre de Usuario selecionado ya se encuentra registrado");
 		
 		//verifico que las contrasenias sean iguales
-		if(usuario.getContrasenia().compareTo(confirmarContrasenia)!=0)
-			throw new ValidationServiceException("usuario.amb.error.coincidencia.contrasenias");
+//		if(usuario.getContrasenia().compareTo(confirmarContrasenia)!=0)
+//			throw new ValidationServiceException("usuario.amb.error.coincidencia.contrasenias");
 		
 		//Validacion fecha nacimiento
 		ValidacionesFormatoFechaNacimiento validacionesFormatoFechaNacimiento = new ValidacionesFormatoFechaNacimiento();
