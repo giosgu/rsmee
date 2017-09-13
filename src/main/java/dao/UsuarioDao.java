@@ -80,11 +80,6 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return usuarios;
 //	}
 //
-//	public Usuario getUsuario(String idUsuario){
-//		Criteria criteria = this.createCriteria();
-//		criteria.add(Restrictions.eq("idUsuario", idUsuario)); 
-//		return (Usuario)criteria.uniqueResult();
-//	}
 //	
 //	@SuppressWarnings("unchecked")
 //	public List<Usuario> obtenerMedicos(String clave, Long codUsuarioOrigenSeleccionado){
@@ -375,7 +370,19 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		criteria.setProjection(propertyProjection);
 //		return criteria.list();
 //	}
-//	
+//
+		
+	public Usuario getUsuario(String idUsuario){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Usuario> cq =  cb.createQuery(entityType);
+		Root<Usuario> parametro = cq.from(entityType);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(parametro.get("idUsuario"), idUsuario));
+		cq.select(parametro).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getSingleResult();
+		
+	}
+	
 	public boolean existeUsuarioByDocumentoONroAfiliado(String nroDocumento, String nroAfiliado){
 //		Criteria criteria = this.createCriteria();
 //		criteria.add(Restrictions.or(

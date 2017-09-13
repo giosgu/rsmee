@@ -16,37 +16,57 @@
     </h:head>
 
     <h:body styleClass="login-body">
-    
-        <div id="login-wrapper">
-            <p:graphicImage name="images/login-logo.png" library="omega-layout" />
-            
-            <div id="login-container">
-                <span class="title">Omega</span>
-                
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12">
-                        <p:inputText placeholder="Username" />
-                    </div>
-                    <div class="ui-g-12">
-                        <p:password placeholder="Password" feedback="false"/>
-                    </div>
-                    <div class="ui-g-12 ui-md-6">
-                        <span class="remember-me">Remember Me</span>
-                        <p:selectBooleanCheckbox />
-                    </div>
-                    <div class="ui-g-12 ui-md-6">
-                        <p:link>Forgot Password</p:link>
-                    </div>
-                    <div class="ui-g-12">
-                        <p:button outcome="dashboard" value="Login" icon="fa fa-check" />
-                    </div>
-                </div>
-            </div>
-            
-            <div class="login-footer">PrimeFaces Omega</div>
-        </div>
-        
-        <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+
+	        <div id="login-wrapper">
+	    	<h:form >
+	            <p:graphicImage name="images/login-logo.png" library="omega-layout" />
+	            
+	            <div id="login-container">
+	                <span class="title">Omega</span>
+	                	<p:messages showDetail="true" autoUpdate="true" closable="true" globalOnly="true" />
+	                <div class="ui-g ui-fluid">
+	                    <div class="ui-g-12">
+	                        <p:inputText 
+	                        	id="nombreUsuario"
+	                        	required="true"
+	                        	requiredMessage="Completá este campo"
+	                        	value="#{loginAction.nombreUsuario}"
+	                        	placeholder="Nombre Usuario" >
+	                        	<f:validator for="nombreUsuario" validatorId="javax.faces.Required" />
+								<p:ajax update="nombreUsuario" event="blur"  />
+	                        </p:inputText>
+	                    </div>
+	                    <div class="ui-g-12">
+	                        <p:password id="contrasenia"
+	                        	required="true"
+	                        	requiredMessage="Completá este campo"
+	                        	value="#{loginAction.contrasenia}" 
+	                        	placeholder="Contraseña" feedback="false">
+	                        </p:password>
+	                    </div>
+	                    <div class="ui-g-12 ui-md-6">
+	                        <span class="remember-me">Remember Me</span>
+	                        <p:selectBooleanCheckbox />
+	                    </div>
+	                    <div class="ui-g-12 ui-md-6">
+	                        <p:link>Forgot Password</p:link>
+	                    </div>
+	                    <div class="ui-g-12">
+	                        <p:commandButton action="#{loginAction.login}" 
+	                        	value="Ingresar" 
+	                        	ajax="false"
+	                        	icon="fa fa-check">
+	                        </p:commandButton>
+	                        <br /> 
+	                        <p:button outcome="altaPaciente" value="Registrarse" styleClass="green-button" icon="fa fa-check" />
+	                    </div>
+	                </div>
+	            </div>
+        </h:form>	            
+	            <div class="login-footer">PrimeFaces Omega</div>
+	        </div>
+	        
+	        <h:outputStylesheet name="css/layout.css" library="omega-layout" />
     </h:body>
 
 </html>

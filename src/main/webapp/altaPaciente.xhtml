@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templatePublico.xhtml">
+
+<ui:define name="title">Message</ui:define>
+
+    <ui:define name="content">
+    <h:form>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+            
+                <div class="card">
+					<h1>Registración</h1>
+					    <p:tooltip />
+                        <p:messages showDetail="true" autoUpdate="true" closable="true" globalOnly="true" />
+					
+                     <p:panelGrid id="grid" columns="1" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
+							<p:outputLabel for="idUsuario" value="Nombre de Usuario:"  />
+						   <p:inputText id="idUsuario"
+			                 required="true"
+			                 requiredMessage="Completá este campo"
+			                 size="25"
+			                 maxlength="50"
+			                 placeholder="nombre@ejemplo.com"
+			                 value="#{altaPacienteAction.usuario.idUsuario}" >
+			                <f:validator for="idUsuario" validatorId="custom.idUsuarioValidator" />
+			                <p:ajax update="msgIsUsuario" event="blur" />
+			                <p:ajax update="idUsuario" event="blur" />
+			             </p:inputText>
+			             <p:message for="idUsuario" id="msgIsUsuario" />
+
+ 			             <p:outputLabel for="password" value="Contraseña:"  />
+				  		<p:password id="password" 
+				  			value="#{altaPacienteAction.usuario.contrasenia}" 
+				  			maxlength="12"
+				  			requiredMessage="Completá este campo"
+				        	required="true" >
+				  		</p:password>
+			             <p:message for="password" id="msgPwd1" />
+			             
+			             <p:outputLabel for="nombre" value="Nombre:"  />
+			             <p:inputText id="nombre"
+			                 required="true"
+			                 requiredMessage="Completá este campo"
+			                maxlength="50"
+			                value="#{altaPacienteAction.usuario.nombre}" >
+			                <f:validator for="nombre" validatorId="custom.nombreValidador" />
+			                <p:ajax update="msgNombre" event="blur" />
+			                <p:ajax update="nombre" event="blur" />
+			             </p:inputText>
+						<p:message for="nombre" id="msgNombre" />
+				        
+				        <p:outputLabel for="apellido" value="Apellido:"  />
+			             <p:inputText id="apellido"
+			                 required="true"
+			                 requiredMessage="Completá este campo"
+			                maxlength="50"
+			                value="#{altaPacienteAction.usuario.apellido}" >
+			                <f:validator for="apellido" validatorId="custom.nombreValidador" />
+			                <p:ajax update="msgApellido" event="blur" />
+			                <p:ajax update="apellido" event="blur" />
+			             </p:inputText>
+						<p:message for="apellido" id="msgApellido" />
+						
+						<p:outputLabel for="numeroAfiliado" value="Número de afiliado:"  />			             
+			             <p:inputText id="numeroAfiliado"
+                			required="true"
+                			placeholder="Siete dígitos, sin el 0 a la izquierda"
+                			requiredMessage="Completá este campo"
+	                      	maxlength="7"
+							value="#{altaPacienteAction.usuario.numeroAfiliado}">
+                		    <f:validator for="apellido" validatorId="custom.numeroAfiliadoValidator" />
+			                <p:ajax update="msgNumeroAfiliado" event="blur" />
+			                <p:ajax update="numeroAfiliado" event="blur" />
+						</p:inputText>		             
+			            <p:message for="numeroAfiliado" id="msgNumeroAfiliado" />
+			             
+			             
+			            <p:selectOneMenu id="tipoDocumento" 
+			            	value="#{altaPacienteAction.tipoDocumentoId}" 
+			            	required="true"
+			            	requiredMessage="Completá este campo" 
+			            	style="margin-bottom:10px;">
+                            <f:selectItem itemLabel="Tipo Documento (*)" itemValue="" />
+                            <f:selectItem itemLabel="DNI" itemValue="1" />
+                            <f:selectItem itemLabel="CI" itemValue="2" />
+                            <f:selectItem itemLabel="LC" itemValue="3" />
+                            <f:selectItem itemLabel="LE" itemValue="4" />
+						<f:validator for="tipoDocumento" validatorId="javax.faces.Required" />
+						<p:ajax update="msgTipoDocumento" event="blur"  />
+						<p:ajax update="tipoDocumento" event="blur"  />
+                        </p:selectOneMenu>
+			            <p:message for="tipoDocumento" id="msgTipoDocumento" />
+			            
+			            <p:outputLabel for="numDocumento" value="Número de documento"  />
+			            <p:inputMask id="numDocumento" 
+				            mask="99999999"
+				            required="true"
+				            requiredMessage="Completá este campo"
+		                    maxlength="12"
+							value="#{altaPacienteAction.usuario.numDocumento}">
+							<f:validator for="numDocumento" validatorId="javax.faces.Required" />
+							<p:ajax update="msgNumDocumento" event="blur"  />
+							<p:ajax update="numDocumento" event="blur"  />
+			            </p:inputMask>
+						<p:message for="numDocumento" id="msgNumDocumento" />
+						
+						<p:outputLabel for="fechaNacimiento" value="Fecha de nacimiento:"  />
+                        <p:inputMask id="fechaNacimiento"
+                        	placeholder="dd/mm/aaaa" 
+                        	mask="99/99/9999"
+                        	required="true"
+                        	requiredMessage="Completá este campo"
+                        	value="#{altaPacienteAction.fechaNacimiento}">
+							<f:validator for="fechaNacimiento" validatorId="javax.faces.Required" />
+							<p:ajax update="msgFechaNacimiento" event="blur"  />
+							<p:ajax update="fechaNacimiento" event="blur"  />
+                        </p:inputMask>
+						<p:message for="fechaNacimiento" id="msgFechaNacimiento" />
+						
+			            <p:selectOneMenu id="genero" 
+			            	value="#{altaPacienteAction.generoId }" 
+			            	required="true"
+			            	requiredMessage="Completá este campo" 
+			            	style="margin-bottom:10px;">
+                            <f:selectItem itemLabel="Sexo (*) " itemValue="" />
+                            <f:selectItem itemLabel="Femenino" itemValue="F" />
+                            <f:selectItem itemLabel="Masculino" itemValue="M" />
+						<f:validator for="tipoDocumento" validatorId="javax.faces.Required" />
+						<p:ajax update="msgGenero" event="blur"  />
+						<p:ajax update="genero" event="blur"  />
+                        </p:selectOneMenu>
+			            <p:message for="genero" id="msgGenero" />
+						
+						<p:selectBooleanCheckbox title="titulo" required="true" 
+							itemLabel="Acepto los términos y condiciones"
+							value="#{altaPacienteAction.aceptoTerminos}"  
+							layout="responsive" /> 
+			     		<p:commandButton id="save2"
+			               value="Aceptar"
+			               action="#{altaPacienteAction.altaPacienteAction}"
+			               inmediate="true"
+			               image="fa fa-check"
+			               validateClient="true" />
+
+                    </p:panelGrid>
+                    
+                </div>
+            </div>
+        </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

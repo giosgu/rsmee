@@ -17,4 +17,19 @@
 	   </resource-bundle>
     </application>
 
+	<navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>loginOk</from-outcome>
+			<if>#{sessionScope.USUARIO_LOGUEADO.paciente != null}</if>
+			<to-view-id>/p/paciente.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>loginOk</from-outcome>
+			<if>#{sessionScope.USUARIO_LOGUEADO.profesional != null}</if>
+			<to-view-id>/m/medico.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>	
 </faces-config>
