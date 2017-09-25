@@ -11,10 +11,11 @@
       <class>model.Afiliado</class>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-          <!--
-          <property name="hibernate.hbm2ddl.auto" value="create"/>
           <property name="hibernate.show_sql" value="true"/>
           <property name="hibernate.format_sql" value="true"/>
+          <!--
+          <property name="hibernate.hbm2ddl.auto" value="create"/>
+         
           <property name="hibernate.use_sql_comments" value="true"/>
           -->
       </properties>

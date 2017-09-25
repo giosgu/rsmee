@@ -2,6 +2,7 @@ package action;
 
 import java.io.Serializable;
 import java.security.GeneralSecurityException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.ejb.Stateful;
@@ -10,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpSession;
 
 import model.EstadoUsuario;
 import model.Usuario;
@@ -71,6 +73,15 @@ public class LoginAction extends  AbstractActionBean implements Serializable {
 		return LOGIN_OK;
 	}
 
+	public String logout(){
+		Usuario usuario = getUsuarioLogueado();
+		usuario.setFechaModificacion(new Date());
+		usuarioDao.merge(usuario);
+    	HttpSession session = getSession();
+    	session.invalidate();
+    	return "logout";
+	}
+	
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}

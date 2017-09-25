@@ -11,11 +11,11 @@ public class UsuarioDecorator {
 	}
 	
 	public Boolean isMedico(){
-		return  usuario.getPrestador() == null; 
+		return  usuario.getProfesional() != null; 
 	}
 	
 	public Boolean isPaciente(){
-		return usuario.getPaciente() == null;
+		return usuario.getPaciente() != null;
 	}
 	
 }

@@ -39,20 +39,31 @@ public class AuthenticationFilter implements Filter {
             //  allow user to proccede if url is login.xhtml or user logged in or user is accessing any page in //public folder
             String reqURI = req.getRequestURI();
             
+            Usuario usuario = this.getUsuarioLogueado(ses); 
+            UsuarioDecorator usuarioDecorator = new UsuarioDecorator(usuario);
+            
+            //si está logueado y va al login, redirección al dashboard
+            if(usuario != null && reqURI.contains("/login.xhtml")){
+            	if(usuarioDecorator.isMedico()){
+            		res.sendRedirect(req.getContextPath() + "/m/medico.xhtml");
+            	}
+            	if(usuarioDecorator.isMedico()){
+            		res.sendRedirect(req.getContextPath() + "/p/paciente.xhtml");
+            	}
+
+            }
             //si la página es pública, pasa
             if(!isNavegacionPrivada(reqURI)){
             	chain.doFilter(request, response);
             	return;
             }
             
-            Usuario usuario = this.getUsuarioLogueado(ses); 
             //si no está logueado y la página no es pública, redirije al login TODO guardar la url original para después
             if(usuario == null){
             	res.sendRedirect(req.getContextPath() + "/login.xhtml");
             	return;
             }
             	
-            UsuarioDecorator usuarioDecorator = new UsuarioDecorator(usuario);
             
             //si es médico y accede a contenido de médico
             if(usuarioDecorator.isMedico() && this.isNavegacionMedica(reqURI) ){
@@ -100,6 +111,8 @@ public class AuthenticationFilter implements Filter {
 	}
 		
 	private Usuario getUsuarioLogueado(HttpSession session) {
+		if(session == null)
+			return null;
 		return (Usuario) session.getAttribute(AbstractActionBean.USUARIO_LOGUEADO);
 	}
 

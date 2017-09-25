@@ -1,5 +1,7 @@
 package action;
 
+import java.io.Serializable;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -7,8 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import model.Usuario;
 
-public abstract class AbstractActionBean {
+public abstract class AbstractActionBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4607755700131027233L;
 	public static final String USUARIO = "USUARIO";
 	public static final String USUARIO_PATH_IMAGEN_PERFIL = "USUARIO_PATH_IMAGEN_PERFIL";
 	public static final String USUARIO_LOGUEADO = "USUARIO_LOGUEADO";

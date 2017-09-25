@@ -40,6 +40,13 @@
     </dependencyManagement>
 
     <dependencies>
+    	  	<!-- https://mvnrepository.com/artifact/org.jboss.spec.javax.servlet/jboss-servlet-api_3.0_spec -->
+			<dependency>
+			    <groupId>org.jboss.spec.javax.servlet</groupId>
+			    <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+			    <version>1.0.0.Final</version>
+			    <scope>provided</scope>
+			</dependency>
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
@@ -70,22 +77,6 @@
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-<!--         <dependency>
-            <groupId>org.richfaces.ui</groupId>
-            <artifactId>richfaces-components-api</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.richfaces.ui</groupId>
-            <artifactId>richfaces-components-ui</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.richfaces.core</groupId>
-            <artifactId>richfaces-core-impl</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-  -->    
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -122,7 +113,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>6.0</version>
+			<version>6.1</version>
 		</dependency>
 		
 		<dependency>
@@ -132,11 +123,14 @@
 		</dependency>
 
 
-		<dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/build-helper-maven-plugin -->
+<!-- 		<dependency>
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>build-helper-maven-plugin</artifactId>
+		    <version>1.9.1</version>
+		</dependency>
+ -->        
+        
     </dependencies>
 
     <!-- Tells Maven this project is to use Java 6, also creates the static meta model for the entities -->
@@ -147,6 +141,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
+					<compilerArguments>
+			            <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+			        </compilerArguments>
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
@@ -165,7 +162,26 @@
                     </execution>
                 </executions>
             </plugin>
-         </plugins>
+<!--             <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+          <executions>
+            <execution>
+                <id>add-source</id>
+                <phase>generate-sources</phase>
+                <goals>
+                    <goal>add-source</goal>
+                </goals>
+                <configuration>
+                    <sources>
+                        <source>${project.build.directory}/generated-sources/annotations/</source>
+                    </sources>
+                </configuration>
+            </execution>
+        </executions>
+   </plugin>
+   -->       </plugins>
 </build>
   
 </project>

@@ -29,12 +29,13 @@
                 <div class="menu">
                     <po:menu>
                         <p:menuitem id="om_dashboard" value="Dashboard" icon="fa fa-home" outcome="/dashboard"/>
-                        <p:submenu id="om_components" label="Paciente" icon="fa fa-sitemap" rendered="${sessionScope.USUARIO_LOGUEADO.paciente != null}" >
+                        <p:submenu id="om_submenu_paciente" label="Paciente" icon="fa fa-sitemap" rendered="${sessionScope.USUARIO_LOGUEADO.paciente != null}" >
 							<p:menuitem id="om_medicamento" value="Medicamento" icon="fa fa-columns" outcome="/sample" />
+							<p:menuitem id="om_busquedamedico" value="Buscar Médicos" icon="fa fa-columns" outcome="/p/busquedaMedico" />
 						</p:submenu>
 
-                        <p:submenu id="om_components" label="Médico" icon="fa fa-sitemap" rendered="${sessionScope.USUARIO_LOGUEADO.profesional != null}" >
-							<p:menuitem id="om_medicamento" value="Medicamento" icon="fa fa-columns" outcome="/sample" />
+                        <p:submenu id="om_submenu_medico" label="Médico" icon="fa fa-sitemap" rendered="${sessionScope.USUARIO_LOGUEADO.profesional != null}" >
+							<p:menuitem id="om_medicamento_medico" value="Medicamento" icon="fa fa-columns" outcome="/sample" />
 						</p:submenu>
 											
  						

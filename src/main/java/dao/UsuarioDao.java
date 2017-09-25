@@ -1,15 +1,20 @@
 package dao;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 
-import model.Parametros;
-import model.Rol;
+import model.Profesional;
 import model.Usuario;
 
 public class UsuarioDao extends BaseDao<Usuario, Long> {
@@ -18,6 +23,8 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 	 * 
 	 */
 	private static final long serialVersionUID = -8262209039280216671L;
+	@Inject
+	public static SingularAttribute<Usuario, Profesional> profesional;
 	
 	public UsuarioDao(){
     	this.entityType = Usuario.class;
@@ -31,7 +38,30 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		criteria.add(Restrictions.in("codigo", codigos));
 //		return criteria.list();
 //	}
-//	
+//
+	//TODO usar el metamodel!!!
+	//https://www.programcreek.com/java-api-examples/index.php?api=javax.persistence.metamodel.Metamodel
+	public List<Usuario> obtenerMedicos(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Usuario> cq =  cb.createQuery(entityType);
+
+		Root<Usuario> usuario = cq.from(entityType);
+//		usuario.join(Usuario_.profesional);
+//		usuario.join(profesional);
+		Metamodel metamodel = em.getMetamodel();
+		EntityType<Usuario> Usuario_ = metamodel.entity(Usuario.class);
+		Join profesional = usuario.join(Usuario_.getSingularAttribute("profesional"));
+//	    profesional.
+//		address.on(qb.equal(address.get(entityAddr_.getSingularAttribute("city")), "Ottawa"));
+		
+		return em.createQuery(cq).getResultList();
+		//(Fetch<Usuario, Profesional> profesional = usuario.fetch("profesional");
+//		usuario.fetch(Profesional_);
+//		cq.select(usuario);
+//		profesional.
+
+	}
+	
 //	@SuppressWarnings("unchecked")
 //	public List<Usuario> buscarRelacionesMedicas(Usuario usuarioLogueado, String apellido, 
 //				Especialidad especialidad, String modoBusqueda, List<Long> especialidadesPermitidas){
