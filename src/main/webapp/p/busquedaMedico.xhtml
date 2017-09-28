@@ -27,26 +27,42 @@
 		                        </p:selectOneMenu>
 						 </p:panelGrid>
                     </div>
-                    <div class="card">
-                        <p:dataList value="#{busquedaMedicoAction.medicos}" 
-                        	var="u" 
-                        	type="unordered" 
-                        	itemType="none" 
-                        	paginator="true" 
-                        	rows="7"
-                        	styleClass="paginated">
-                            <f:facet name="header">
+                
+                	<div class="card"> 
+                		 <p:dataGrid var="u" value="#{busquedaMedicoAction.medicos}"  columns="3" layout="grid"
+                                    rows="6" paginator="true" id="medicosDataGrid"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="3,6,9,12,16">
+
+                		 <f:facet name="header">
                                 Médicos
-                            </f:facet>
-                            <p:commandLink  title="View Detail" styleClass="" style="margin-right:10px;">
-                                <f:setPropertyActionListener value="#{u}" target="#{busquedaMedicoAction.medicoSeleccionado}" />
-                                <i class="fa fa-table gray Fs18" style="margin-top:5px;"></i>
-                            </p:commandLink>
-                            <h:outputText  value="#{u.nombre}, #{u.apellido}" style="display:inline-block"/>
-                        </p:dataList>
-                        
-                 </div>
-               </div>
+                         </f:facet>
+                         
+                         <p:panel header="#{u.apellido}, #{u.nombre}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                <h:graphicImage alt="Medico" 
+									value="/images/dynamic/?file=#{u.pathImagenPerfil}" 
+									width="60" 
+									height="60" />
+                                </h:panelGrid>
+                                <h:outputText value="Especialidades" style="font-weight: bold" />
+                                <br/>
+                                <p:repeat var="_especialidad" value="#{u.profesional.especialidades}"  >
+                                	<h:outputText value="#{_especialidad.descripcion}"  />
+                                	<h:outputText rendered="#{u.profesional.especialidades.size() != u.profesional.especialidades.indexOf(_especialidad)+ 1}" value=", " />
+                                </p:repeat>
+                                    <p:commandButton action="#{busquedaMedicoAction.enviarSolicitud(u.codigo)}" 
+			                        	value="Agregar" 
+			                        	ajax="false"
+			                        	icon="fa fa-check">
+	                        	</p:commandButton>
+                                
+                               <p:commandButton type="button" value="Eliminar" styleClass="red-button" style="margin-bottom:10px;"/>
+                            </p:panel>
+                		</p:dataGrid>                         
+                	</div>
+                
+			</div>	
              </div>
         </h:form>
         

@@ -1,0 +1,55 @@
+/* 
+	Vista Datos de Usuarios - Estilos Genéricos
+	(busquedaMedicoAction, solicitudesAction, mensajesForm, 
+		mensajesLeidosForm, mostrarMensaje, misPacientes, misMedicos)
+*/
+#lista-vistaContenedor-recuadroWrapper{ border: 1px solid #11808A;	padding: 10px;}
+#lista-vistaContenedor-wrapper{ padding: 10px;}
+.lista-vistaContenedor-usuarios { list-style: none;}
+.lista-vistaContenedor-datos {
+	/*float: left;*/
+	font-size: 1.1em;
+	line-height: 1.4em;
+	position: relative;
+	overflow: hidden;
+}
+.lista-vistaContenedor-cabecera{
+	line-height: 1.7em;
+	font-size: 1.2em;
+	font-weight: bold;
+	position: relative;	
+}
+.lista-vistaContenedor-imagen {
+	position: relative;
+	width: 60px;
+	float: left;
+	margin: 0 20px 0 0;
+}
+.lista-vistaContenedor-listaDatosContenedor{
+	display: inline;
+	overflow: hidden;
+	font-size: 1.0em;
+	position:relative;
+}
+.lista-vistaContenedor-listaDatos {
+	display: inline;
+	list-style: none;
+	font-style: italic;
+}
+.lista-vistaContenedor-listaDatos li {
+	display: inline; 
+}
+.lista-vistaContenedor-botonera{
+	margin-top: 10px;
+	float: right;
+	font-size: 1.1em;
+	position: relative;
+}
+.lista-vistaContenedor-botonera-links{ margin-top: 18px;}
+.lista-vistaContenedor-botonera-links .link{ margin-right: 10px;}
+.lista-sin-estilos{ list-style: none;}
+
+.negrita{
+	font-weight: bold;	
+}
+}

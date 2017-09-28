@@ -3,7 +3,7 @@
   <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="338" y="562" id="pf150524944056622" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" outlinks="pf15055666833320 pf15055666833321 pf15055667097187" inlinks="pf15055667097187" path="/login.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="primerAltaPaciente.xhtml" x="122" y="178" id="pf150524944056624" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="/primerAltaPaciente.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="p/paciente.xhtml" x="554" y="370" id="pf15055666833324" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf15055666833320" path="/p/paciente.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="m/medico.xhtml" x="554" y="754" id="pf15055666833325" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf15055666833321" path="/m/medico.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="m/medico.xhtml" x="554" y="754" id="pf15055666833325" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf15055666833321" path="/m/medico.xhtml"/>
   <links id="pf15055666833320" target="pf15055666833324" source="pf150524944056622" outcome="loginOk" redirect="true"/>
   <links id="pf15055666833321" target="pf15055666833325" source="pf150524944056622" outcome="loginOk" redirect="true"/>
   <links id="pf15055667097187" target="pf150524944056622" source="pf150524944056622" outcome="logout" redirect="true"/>
