@@ -33,12 +33,13 @@
 			<attribute name="owner.project.facets" value="jst.jsf;jst.web;jpt.jpa"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/omega-menu-1.1.2.jar"/>
+	<classpathentry kind="lib" path="target/generated-sources/annotations/model"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_45">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/omega-menu-1.1.2.jar"/>
-	<classpathentry kind="lib" path="target/generated-sources/annotations/model"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
