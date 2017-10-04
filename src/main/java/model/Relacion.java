@@ -16,10 +16,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 @Entity
 @Table(name = "relacion")
 public class Relacion implements Serializable{
     
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4123296005062205150L;
 	private Long codigo;
 	private Usuario origenUsuario;
 	private Usuario destinoUsuario;
@@ -96,4 +103,24 @@ public class Relacion implements Serializable{
 		this.fechaCreacion = fechaCreacion;
 	}
 	
+	  @Override
+	    public int hashCode() {
+	        HashCodeBuilder hcb = new HashCodeBuilder();
+	        hcb.append(codigo);
+	        return hcb.toHashCode();
+	    }
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Relacion)) {
+            return false;
+        }
+        Relacion that = (Relacion) obj;
+        EqualsBuilder eb = new EqualsBuilder();
+        eb.append(codigo, that.codigo);
+        return eb.isEquals();
+    }
 }

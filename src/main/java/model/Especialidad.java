@@ -13,6 +13,10 @@ import javax.persistence.Table;
 @Table(name = "especialidad")
 public class Especialidad extends CreateAuditoryDataEntity implements ComboEntity {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5373733747667362435L;
 	private Long codigo;
 	private String descripcion;
 	
