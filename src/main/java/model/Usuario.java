@@ -44,6 +44,8 @@ import javax.validation.constraints.Size;
 import listener.EntityAuditorListener;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /*
 import org.jboss.seam.annotations.security.management.UserFirstNameName;
@@ -421,4 +423,25 @@ public class Usuario extends FullAuditoryDataEntity implements ComboEntity {
 		this.farmacia = farmacia;
 	}
 	
+	  @Override
+	    public int hashCode() {
+	        HashCodeBuilder hcb = new HashCodeBuilder();
+	        hcb.append(codigo);
+	        return hcb.toHashCode();
+	    }
+	
+	@Override
+  public boolean equals(Object obj) {
+      if (this == obj) {
+          return true;
+      }
+      if (!(obj instanceof Usuario)) {
+          return false;
+      }
+      Usuario that = (Usuario) obj;
+      EqualsBuilder eb = new EqualsBuilder();
+      eb.append(codigo, that.codigo);
+      return eb.isEquals();
+  }
+
 }

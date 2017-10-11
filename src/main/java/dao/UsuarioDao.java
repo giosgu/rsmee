@@ -2,11 +2,16 @@ package dao;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -14,8 +19,10 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
+import model.EstadoUsuario;
 import model.Profesional;
 import model.Usuario;
+import utils.StringUtils;
 
 public class UsuarioDao extends BaseDao<Usuario, Long> {
 
@@ -32,13 +39,19 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 
 	}
 
-//	@SuppressWarnings("unchecked")
-//	public List<Usuario> getUsuariosCodigoIn(List<Long> codigos){
-//		Criteria criteria = this.createCriteria();
-//		criteria.add(Restrictions.in("codigo", codigos));
-//		return criteria.list();
-//	}
-//
+
+	public List<Usuario> getUsuariosCodigoIn(List<Long> codigos){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Usuario> cq =  cb.createQuery(getEntityClass());
+		Root<Usuario> usuario = cq.from(getEntityClass());
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		Expression<String> parentExpression = usuario.get("codigo");
+		predicates.add(parentExpression.in(codigos));
+		cq.select(usuario).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();
+
+	}
+	
 	//TODO usar el metamodel!!!
 	//https://www.programcreek.com/java-api-examples/index.php?api=javax.persistence.metamodel.Metamodel
 	public List<Usuario> obtenerMedicos(){
@@ -62,7 +75,7 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 
 	}
 	
-//	@SuppressWarnings("unchecked")
+//	TODO
 //	public List<Usuario> buscarRelacionesMedicas(Usuario usuarioLogueado, String apellido, 
 //				Especialidad especialidad, String modoBusqueda, List<Long> especialidadesPermitidas){
 //				
@@ -135,147 +148,60 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return criteria.list();
 //	}
 //	
-//	public Usuario buscarUsuarioPorCodigo(Long codigoUsuario){
-//		Criteria c = this.createCriteria();
-//		c.add(Restrictions.eq("codigo", codigoUsuario));
-//		return (Usuario) c.uniqueResult();
-//	}
-//	
-//	@SuppressWarnings("unchecked")
-//	public List<Usuario> obtenerCriteriaSegunPrestador(){
-//		Criteria criteria = this.createCriteria();
-//		criteria.createAlias("prestador", "prestador");
-//		criteria.add(Restrictions.eq("prestador.codigo", this.getUsuarioLogueado().getPrestador().getCodigo()));
-//		criteria.add(Restrictions.eq("estadoUsuario.codigo", EstadoUsuario.ESTADO_ACTIVO.getCodigo()));
-//		criteria.add(Restrictions.not(Restrictions.eq("codigo", new Long(this.getUsuarioLogueado().getPrestador().getCodigo()))));
-//		criteria.add(Restrictions.not(Restrictions.eq("administrador", true)));
-//		
-//		return criteria.list();
-//	}
-//	
-//	public List<SelectItem> obtenerUsuariosItemSegunPrestador(){
-//    	List<Usuario> usuarios = this.obtenerCriteriaSegunPrestador();
-//    	return this.asSelectItems(new ArrayList<Usuario>(usuarios));
-//    }
-//	
-//	
-//		//Administracion de Pacientes
-//		public Criteria getCriteriaUsuariosPacientesDisponibles(Usuario administrador){
-//			Criteria criteria = this.createCriteria();
-//			criteria.add(Restrictions.isNotNull("paciente"));
-//			criteria.add(Restrictions.eq("estadoUsuario.codigo", EstadoUsuario.ESTADO_PENDIENTE.getCodigo()));
-//			criteria.add(Restrictions.eq("prestador.codigo", administrador.getPrestador().getCodigo()));
-//			return criteria;
-//		}
-//		@SuppressWarnings("unchecked")
-//		public Integer cantidadUsuariosPacientesPendientes(Usuario administrador){
-//			Criteria criteria = this.getCriteriaUsuariosPacientesDisponibles(administrador);
-//			criteria.setProjection(Projections.rowCount());
-//		  	List result = criteria.list();
-//		  	return result.isEmpty() ? new Integer(0) : (Integer)result.get(0);
-//		}
-//		@SuppressWarnings("unchecked")
-//		public List<Usuario> listarUsuarios(Usuario administrador, int cantidadResultados, int offSet){
-//			Criteria criteria = this.getCriteriaUsuariosPacientesDisponibles(administrador);
-//			criteria.addOrder(Order.desc("codigo"));
-//			criteria.setFirstResult(offSet);
-//			criteria.setMaxResults(cantidadResultados);
-//			
-//			return criteria.list();
-//		}
-//	    
-//		public Criteria obtenerCriteriaUsuariosCampaniaAdministrador(CampaniaForm campaniaForm){
-//			
-//			//Ningun Perfil
-//	      	if( PerfilCampania.STR_NINGUNO.compareToIgnoreCase(campaniaForm.getPerfil())==0 )
-//	      		return null;
-//	      	
-//	      	Criteria criteria = this.createCriteria();			
-//			criteria.createAlias("prestador", "prestador");
-//	    	criteria.add(Restrictions.eq("prestador.codigo", this.getUsuarioLogueado().getPrestador().getCodigo()));
-//	    	criteria.add(Restrictions.not( Restrictions.eq("codigo", this.getUsuarioLogueado().getCodigo()) ));
-//	    	criteria.add(Restrictions.not(Restrictions.and(Restrictions.isNull("paciente"), Restrictions.isNull("profesional"))));
-//	    	criteria.add(Restrictions.eq("estadoUsuario.codigo", EstadoUsuario.ESTADO_ACTIVO.getCodigo()));
-//	    	
-//	    	boolean perfilPaciente=false;
-//	    	boolean perfilMedico=false;	    	
-//	    	
-//	    	//si es paciente
-//	    	if(PerfilCampania.STR_PACIENTE.equals(campaniaForm.getPerfil())){
-//				criteria.createAlias("paciente", "paciente");
-//				perfilPaciente=true;
-//	    	}
-//	    	//si es profesional
-//	    	if(PerfilCampania.STR_MEDICO.equals(campaniaForm.getPerfil())){
-//	    		criteria.createAlias("profesional", "profesional");
-//	    		perfilMedico=true;
-//	    	}
-//	    	
-//	    	//tipo paciente
-//	    	if(!perfilMedico && StringUtils.isNotEmpty(campaniaForm.getTipoPaciente())){
-//	    		if(perfilPaciente){
-//	    			criteria.createAlias("paciente.tipoPaciente", "tipoPaciente");
-//	    			criteria.add(Restrictions.eq("tipoPaciente.codigo", campaniaForm.getTipoPaciente()));
-//	    		}else if (!perfilMedico){
-//	    			criteria.createAlias("paciente", "paciente", CriteriaSpecification.LEFT_JOIN);
-//	    			criteria.createAlias("paciente.tipoPaciente", "tipoPaciente");
-//					criteria.add(Restrictions.eq("tipoPaciente.codigo", campaniaForm.getTipoPaciente()));
-//	    		}
-//	    	}
-//	    	
-//			if(perfilPaciente && campaniaForm.getPatologias()!=null && campaniaForm.getPatologias().size()!=0){
-//				criteria.createAlias("paciente.patologias", "patologias");
-//				criteria.add(Restrictions.in("patologias.codigo", campaniaForm.getPatologias()));
-//			}
-//			if(perfilMedico && campaniaForm.getEspecialidades()!=null && campaniaForm.getEspecialidades().size()!=0){
-//				criteria.createAlias("profesional.especialidades", "especialidades");
-//				criteria.add(Restrictions.in("especialidades.codigo", campaniaForm.getEspecialidades()));
-//			}
-//			if(campaniaForm.getGenero()!=null){
-//				criteria.createAlias("genero", "genero");
-//				if(Genero.STR_MASCULINO.equals(campaniaForm.getGenero())){
-//					criteria.add(Restrictions.eq("genero.codigo", Genero.STR_MASCULINO));
-//				}else if(Genero.STR_FEMENINO.equals(campaniaForm.getGenero())){
-//					criteria.add(Restrictions.eq("genero.codigo", Genero.STR_FEMENINO));
-//				}
-//			}
-//			if(campaniaForm.getDesdeEdad()!=null && campaniaForm.getHastaEdad()!=null){
-//				criteria.add(Restrictions.between("fechaNacimiento", DateUtils.fechaNacimientoPara(campaniaForm.getHastaEdad()), DateUtils.fechaNacimientoPara(campaniaForm.getDesdeEdad()) ));  
-//			}
-//			if(campaniaForm.getUsuariosSeleccionados()!=null && campaniaForm.getUsuariosSeleccionados().size()!=0){
-//				criteria.add(Restrictions.not(Restrictions.in("codigo", campaniaForm.getUsuariosSeleccionados())));
-//			}
-//			
-//	    	return criteria;
-//		}
-//
-//		@SuppressWarnings("unchecked")
-//		public Integer obtenerCantidadUsuariosCampaniaAdministrador(CampaniaAction campaniaAction) {
-//			
-//			Integer cantUsuariosSeleccionados=0;
-//	      	if(campaniaAction.getCampaniaForm().getUsuariosSeleccionados()!=null && campaniaAction.getCampaniaForm().getUsuariosSeleccionados().size()!=0)
-//	      		cantUsuariosSeleccionados = campaniaAction.getCampaniaForm().getUsuariosSeleccionados().size();
-//			
-//			Criteria criteria = this.obtenerCriteriaUsuariosCampaniaAdministrador(campaniaAction.getCampaniaForm());
-//			if(criteria==null)
-//				return cantUsuariosSeleccionados;
-//			ProjectionList projList = Projections.projectionList();
-//	        projList.add(Projections.countDistinct("codigo"));
-//	        criteria.setProjection(projList);
-//	      	List result = criteria.list();
-//	      	
-//	      	return result.isEmpty() ? new Integer(0) : (Integer)result.get(0)+cantUsuariosSeleccionados;
-//		}
-//	    
-//		@SuppressWarnings("unchecked")
-//		public List<Usuario> obtenerUsuariosPorFiltroCampania(CampaniaAction campaniaAction){
-//			Criteria criteria = this.obtenerCriteriaUsuariosCampaniaAdministrador(campaniaAction.getCampaniaForm());
-//			if (criteria==null)
-//				return new ArrayList<Usuario>();
-//	    	List<Usuario> usuarios = (List<Usuario>) criteria.list();
-//	    	return (new ArrayList<Usuario>(usuarios));
-//	    }
-//		
+
+		public Usuario buscarUsuarioPorCodigo(Long codigoUsuario){
+		return super.findBy(codigoUsuario);
+		
+	}
+
+		
+		public List<SelectItem> obtenerUsuariosItemSegunPrestador(Usuario usuarioLogueado){
+
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  cb.createQuery(Usuario.class);
+			Root<Usuario> usuario = cq.from(getEntityClass());
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), usuarioLogueado.getPrestador().getCodigo()));
+			predicates.add(cb.equal(usuario.get("estadoUsuario").get("codigo"), EstadoUsuario.ESTADO_ACTIVO.getCodigo()));
+			predicates.add(cb.not(cb.equal(usuario.get("codigo"), usuarioLogueado.getCodigo())));
+			predicates.add(cb.not(cb.equal(usuario.get("administrador"), true)));
+			cq.select(usuario).where(predicates.toArray(new Predicate[]{}));
+			List<Usuario> usuarios = em.createQuery(cq).getResultList();
+			return this.asSelectItems(new ArrayList<Usuario>(usuarios));
+			
+		}
+		
+		public Integer cantidadUsuariosPacientesPendientes(Usuario administrador){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Long> cq =  cb.createQuery(Long.class);
+			Root<Usuario> usuario = cq.from(getEntityClass());
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.isNotNull(usuario.get("paciente")));
+			predicates.add(cb.equal(usuario.get("estadoUsuario").get("codigo"), EstadoUsuario.ESTADO_PENDIENTE.getCodigo()));
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), administrador.getPrestador().getCodigo()));
+
+			cq.select(cb.count(usuario)).where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getSingleResult().intValue();
+			
+		}
+
+		public List<Usuario> listarUsuarios(Usuario administrador, int cantidadResultados, int offSet){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  cb.createQuery(Usuario.class);
+			Root<Usuario> usuario = cq.from(getEntityClass());
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.isNotNull(usuario.get("paciente")));
+			predicates.add(cb.equal(usuario.get("estadoUsuario").get("codigo"), EstadoUsuario.ESTADO_PENDIENTE.getCodigo()));
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), administrador.getPrestador().getCodigo()));
+
+			cq.select(usuario)
+				.where(predicates.toArray(new Predicate[]{}))
+				.orderBy(cb.asc(usuario.get("codigo")));
+
+			return em.createQuery(cq).setFirstResult(offSet).setMaxResults(cantidadResultados).getResultList();
+		}
+
+
 //		public Criteria obtenerCriteriaUsuariosPorCodigos(List<Long> listaCodigosUsuarios){
 //			if(listaCodigosUsuarios == null || listaCodigosUsuarios.isEmpty())
 //				return null;
@@ -286,16 +212,24 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //	    	return criteria;
 //	    }
 //		
-//		public String obtenerCvPorCodUsuario(Long codigoUsuario){
-//			Criteria criteria = this.createCriteria();
-//			criteria.add(Restrictions.eq("codigo", codigoUsuario));
-//			criteria.createAlias("profesional", "profesional");			
-//			ProjectionList projectionList = Projections.projectionList();
-//			projectionList.add(Projections.property("profesional.pathCV"));
-//			criteria.setProjection(projectionList);
-//			return (String) criteria.uniqueResult();
-//		}
-//		
+
+		public String obtenerCvPorCodUsuario(Long codigoUsuario){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Object> cq =  cb.createQuery(Object.class);
+			Root<Usuario> usuario = cq.from(getEntityClass());
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("codigo"), codigoUsuario));
+
+			cq.select(usuario.get("profesional").get("pathCV"))
+				.where(predicates.toArray(new Predicate[]{}));
+			try{
+				return em.createQuery(cq).getSingleResult().toString();
+			}catch(NoResultException e){
+				return null;
+			}
+			
+		}
+		
 		public List<Usuario> getByNumeroAfiliadoYDocumento(String numeroAfiliado, String numeroDocumento){
 			
 			CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -307,24 +241,37 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 			cq.select(parametro).where(predicates.toArray(new Predicate[]{}));
 			return em.createQuery(cq).getResultList();
 		}
-//		
-//		public List<Usuario> getUsuariosPacientesPorEstado(Collection codigosEstado){
-//			Criteria criteria = this.createCriteria();
-//			criteria.add(Restrictions.isNotNull("paciente"));
-//			criteria.add(Restrictions.in("estadoUsuario.codigo", codigosEstado));
-//			
-//			return criteria.list();
-//		}
-//		
-//    public boolean existeUsuarioAfiliado(String numDocumento, String numeroAfiliado){
-//    	Criteria criteria = this.createCriteria();
-//    	criteria.add(Restrictions.eq("numDocumento", numDocumento));
-//    	criteria.add(Restrictions.eq("numeroAfiliado", numeroAfiliado));
-//    	List result = criteria.list();
-//    	return result.isEmpty() ? false : true;
-//    }
-//
-//	public List<Usuario> colegasConMismaEspecialidad(String codigoPrestador, List<Long> codigosEspecialidades){
+
+		public List<Usuario> getUsuariosPacientesPorEstado(Collection<String> codigosEstado){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.isNotNull(usuario.get("paciente")));
+			Expression<String> parentExpression = usuario.get("estadoUsuario").get("codigo");
+			predicates.add(parentExpression.in(codigosEstado));
+			cq.select(usuario)
+				.where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getResultList();
+
+		}
+
+	    public boolean existeUsuarioAfiliado(String numDocumento, String numeroAfiliado){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("numDocumento"), numDocumento));
+			predicates.add(cb.equal(usuario.get("numeroAfiliado"), numeroAfiliado));
+			cq.select(usuario)
+			.where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getResultList().isEmpty() ? false : true;
+	    }
+
+
+		
+//		TODO	
+//	    public List<Usuario> colegasConMismaEspecialidad(String codigoPrestador, List<Long> codigosEspecialidades){
 //		Criteria criteria = this.createCriteria();
 //		criteria.add(Restrictions.isNotNull("profesional"));
 //		criteria.add(Restrictions.not(Restrictions.eq("codigo", this.getCodigoUsuario())));
@@ -338,7 +285,7 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return criteria.list();
 //	}
 //	
-//	@SuppressWarnings("unchecked")
+//	TODO
 //	public List<Usuario> usuariosMedicosPorPrestadorConEspecialidad(String codigoPrestador, List<Long> especialidades){
 //		Criteria criteria = this.createCriteria();
 //		criteria.createAlias("profesional", "profesional");
@@ -350,7 +297,7 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return criteria.list();
 //	}
 //	
-//	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked") TODO
 //	public List<Usuario> usuariosPacientesContactadosCon(List<Long> codigosMedicos){
 //		if(codigosMedicos==null || codigosMedicos.isEmpty())
 //			return new ArrayList<Usuario>();
@@ -366,22 +313,26 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return criteria.list();
 //	}
 //	
-//	@SuppressWarnings("unchecked")
-//	public List<Usuario> usuariosPacientesPorClavePrestador(String codPrestador, String clave) {
-//		Criteria criteria = this.createCriteria();
-//		criteria.add(Restrictions.eq("prestador.codigo", codPrestador));
-//		criteria.add(Restrictions.isNotNull("paciente"));
-//
-//		clave = StringUtils.limpiarString(clave);
-//		String sqlRestApellido = "TRANSLATE(UPPER (apellido), 'ÁÉÍÓÚ','AEIOU') like '%"+clave.toUpperCase()+"%'";
-//		String sqlRestNombre = "TRANSLATE(UPPER (nombre), 'ÁÉÍÓÚ','AEIOU') like '%"+clave.toUpperCase()+"%'";		
-//		Criterion criterion;
-//		criterion = Restrictions.or(Restrictions.sqlRestriction(sqlRestApellido), Restrictions.sqlRestriction(sqlRestNombre));		
-//		criteria.add(criterion);
-//		
-//		return criteria.list();
-//	}
-//	
+
+		public List<Usuario> usuariosPacientesPorClavePrestador(String codPrestador, String clave) {
+
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), codPrestador));
+			predicates.add(cb.isNotNull(usuario.get("paciente")));
+			clave = StringUtils.limpiarString(clave);
+			Predicate likeApellido = cb.like(functionAccentInsensitivePostgres(cb, cb.upper(usuario.get("apellido").as(String.class))), clave.toUpperCase());
+			Predicate likeNombre =cb.like(functionAccentInsensitivePostgres(cb, cb.upper(usuario.get("nombre").as(String.class))), clave.toUpperCase());
+			predicates.add(cb.or(likeApellido, likeNombre));
+			cq.select(usuario)
+			.where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getResultList();
+		}
+
+	    
+//	TODO
 //	public List<Long> getCodigosProfesionalesQueTenganEspecilidad(List<Long> codEspecialidades){
 //		Criteria criteria = this.createCriteria();
 //		criteria.createAlias("profesional", "profesional");
@@ -392,16 +343,22 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return criteria.list();
 //	}
 //	
-//	public List<Long> getCodigosProfesionalesPorPrestador(String codPrestador){
-//		Criteria criteria = this.createCriteria();
-//		criteria.createAlias("profesional", "profesional");
-//		criteria.add(Restrictions.eq("prestador.codigo", codPrestador));
-//		PropertyProjection propertyProjection = Projections.property("codigo");
-//		criteria.setProjection(propertyProjection);
-//		return criteria.list();
-//	}
-//
-		
+
+		public List<Long> getCodigosProfesionalesPorPrestador(String codPrestador){
+
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Long> cq =  cb.createQuery(Long.class); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), codPrestador));
+			predicates.add(cb.isNotNull(usuario.get("profesional")));
+
+			cq.select(usuario.<Long>get("codigo"))
+			.where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getResultList();
+			
+	}
+
 	public Usuario getUsuario(String idUsuario){
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Usuario> cq =  cb.createQuery(entityType);
@@ -414,12 +371,6 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 	}
 	
 	public boolean existeUsuarioByDocumentoONroAfiliado(String nroDocumento, String nroAfiliado){
-//		Criteria criteria = this.createCriteria();
-//		criteria.add(Restrictions.or(
-//			Restrictions.eq("numDocumento", nroDocumento),
-//			Restrictions.eq("numeroAfiliado", nroAfiliado)
-//		));
-//		return criteria.list().isEmpty() ? false : true;
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Usuario> cq =  cb.createQuery(entityType);
 		Root<Usuario> parametro = cq.from(entityType);
@@ -431,13 +382,17 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 		return !em.createQuery(cq).getResultList().isEmpty();
 		
 	}
-//	
-//	public List<Usuario> getUsuariosEstadoPre(Date fechaDesde){
-//		Criteria criteria = this.createCriteria();
-//		criteria.add(Restrictions.eq("estadoUsuario.codigo", EstadoUsuario.ESTADO_PRE_ACEPTADO.getCodigo()));
-//		criteria.add(Restrictions.ge("fechaCreacion", fechaDesde));
-//		return criteria.list();
-//	}
-//
-	
+
+	public List<Usuario> getUsuariosEstadoPre(Date fechaDesde){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Usuario> cq =  cb.createQuery(entityType);
+		Root<Usuario> usuario = cq.from(entityType);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(usuario.get("estadoUsuario").get("codigo"), EstadoUsuario.ESTADO_PRE_ACEPTADO.getCodigo()));
+		predicates.add(cb.greaterThanOrEqualTo(usuario.<Date>get("fechaCreacion"), fechaDesde));
+		cq.select(usuario).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();
+
+	}
+
 }

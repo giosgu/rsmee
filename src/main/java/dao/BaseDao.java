@@ -34,13 +34,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 
 import model.ComboEntity;
-
 import comparator.SelectItemComparator;
 
 /**
@@ -54,13 +54,14 @@ import comparator.SelectItemComparator;
 public abstract class BaseDao<E, PK extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = 1845865757364398127L;
-
+    
     @Inject
     protected transient EntityManager em;
 
     protected Class<E> entityType;
     protected Class<PK> idType;
 
+    
     /**
      * Persist (new entity) or merge the given entity.
      *
@@ -377,4 +378,27 @@ public abstract class BaseDao<E, PK extends Serializable> implements Serializabl
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		return cb.createQuery(entityType);
 	}
+	
+    protected static Expression<String> functionAccentInsensitivePostgres(CriteriaBuilder cb, Expression<String> valor) {
+    	return cb.function(
+    	"TRANSLATE",
+    	String.class,
+    	valor,
+    	cb.literal("ÁÉÍÓÚ"),
+    	cb.literal("AEIOU"));
+    	}
+
+	public List<SelectItem> asSelectItems(@SuppressWarnings("rawtypes") List entities){
+		List<SelectItem> items = new ArrayList<SelectItem>();
+		for (Object entity : entities) {
+			ComboEntity comboEntity = (ComboEntity) entity;
+			SelectItem item = new SelectItem();
+			item.setLabel(comboEntity.getLabel());
+			item.setValue(comboEntity.getValue());
+			items.add(item);
+		}
+		Collections.sort(items, new SelectItemComparator());
+		return items;
+	}
+
 }

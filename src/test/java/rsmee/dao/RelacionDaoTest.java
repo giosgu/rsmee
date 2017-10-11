@@ -1,6 +1,5 @@
 package rsmee.dao;
 
-import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,7 +10,6 @@ import model.Usuario;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +25,7 @@ public class RelacionDaoTest extends BaseJPATest {
 	
 	@Deployment
     public static WebArchive createDeployment() {
-		File[] libs = Maven.resolver()  
-			    .loadPomFromFile(POM).resolve(COMMONS_LANG_3)  
-			    .withTransitivity().asFile();   
-		return createDeployment("relacionDaoTest.war")
-				.addAsLibraries(libs);
+		return createDeployment("relacionDaoTest.war");
 	}
 
 	
@@ -83,7 +77,7 @@ public class RelacionDaoTest extends BaseJPATest {
 		Assert.assertEquals(relacion, relacionDao.getObjectByID(new Long(1)));
 	}
 	
-//	@Test
+	@Test
 	public void tieneSolicitudParaMedicoConEspecialidadTest(){
 		Assert.assertTrue(relacionDao.tieneSolicitudParaMedicoConEspecialidad(new Long(21), new Long(4)));
 		Assert.assertFalse(relacionDao.tieneSolicitudParaMedicoConEspecialidad(new Long(21), new Long(1)));
