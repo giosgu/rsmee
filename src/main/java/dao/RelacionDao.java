@@ -8,10 +8,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import model.Especialidad;
 import model.EstadoRelacion;
+import model.Profesional;
 import model.Relacion;
 import model.Usuario;
 
@@ -128,10 +132,12 @@ public class RelacionDao extends BaseDao<Relacion, Long> {
 		predicates.add(cb.isNotNull(relacion.get("destinoUsuario").get("profesional")));
 		predicates.add(cb.equal(relacion.get("origenUsuario").get("codigo"), codUsuario));
 		predicates.add(cb.equal(relacion.get("estadoRelacion").get("codigo"), EstadoRelacion.ESTADO_INICIAL.getCodigo()));
-		//FIXME ver como resolver el join con profesoinal y especialidades, además quitar lo de la provincia que es para pruebas.
-//		predicates.add(cb.equal(relacion.get("destinoUsuario").get("profesional").get("especialidades").get("codigo"),codEspecialidad));
-		predicates.add(cb.equal(relacion.get("destinoUsuario").get("profesional").get("codigoProvinciaMatriculal").get("descripcion"),"lalala"));
 		
+		Join<Relacion, Usuario> usuarioDestino = relacion.join("destinoUsuario", JoinType.INNER);
+		Join<Usuario, Profesional> profesional = usuarioDestino.join("profesional", JoinType.INNER);
+		Join<Profesional, Especialidad> especialidad = profesional.join("especialidades", JoinType.INNER);
+		predicates.add(cb.equal(especialidad.get("codigo"), codEspecialidad));
+
 		cq.select(relacion).where(predicates.toArray(new Predicate[]{}));
 		return em.createQuery(cq).getResultList().size() != 0;
 }

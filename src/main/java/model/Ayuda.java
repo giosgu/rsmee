@@ -10,20 +10,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "ayuda_soporte")
 public class Ayuda implements Serializable{
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4285031116594309418L;
+
+	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="AyudaSoporteSeqOra")
 	@SequenceGenerator(name="AyudaSoporteSeqOra",sequenceName="AYUDA_SOPORTE_SEQ", allocationSize=1)
 	@Column(name = "codigo", unique = true, nullable = false)
@@ -41,8 +44,7 @@ public class Ayuda implements Serializable{
 	@Size(max = 30)
     private String apellido;
     
-	@Column(name = "texto_consulta", nullable=false)
-	@Lob
+	@Column(name = "texto_consulta", nullable=false, columnDefinition="TEXT")
     private String textoConsulta;
     
 	@Column(name = "mail_contacto")

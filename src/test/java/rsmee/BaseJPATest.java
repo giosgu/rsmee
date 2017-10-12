@@ -1,6 +1,8 @@
 package rsmee;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -11,6 +13,7 @@ public abstract class BaseJPATest {
 
 	protected static String POM = "pom.xml"; 
 	protected static String COMMONS_LANG_3 = "org.apache.commons:commons-lang3";
+	protected static String PRESTADOR_AUSTRAL_SALUD = "1"; 
 	
     protected static WebArchive createDeployment(String deploymentUnitName) {
 		File[] libs = Maven.resolver()  
@@ -27,6 +30,14 @@ public abstract class BaseJPATest {
 		.addPackages(true, "utils")
 		.addPackages(true, "comparator")
 		.addAsLibraries(libs);
+    }
+    
+    protected List<Long> arrayStringToListLong(String[] origen){
+		List<Long> codigos = new ArrayList<Long>();
+		for (String str : origen) {
+			codigos.add(new Long(str.trim()));
+		}
+		return codigos;
     }
 
 }

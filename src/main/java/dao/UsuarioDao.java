@@ -13,12 +13,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
+import model.Contacto;
+import model.Especialidad;
 import model.EstadoUsuario;
 import model.Profesional;
 import model.Usuario;
@@ -52,26 +53,14 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 
 	}
 	
-	//TODO usar el metamodel!!!
-	//https://www.programcreek.com/java-api-examples/index.php?api=javax.persistence.metamodel.Metamodel
 	public List<Usuario> obtenerMedicos(){
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Usuario> cq =  cb.createQuery(entityType);
-
-		Root<Usuario> usuario = cq.from(entityType);
-//		usuario.join(Usuario_.profesional);
-//		usuario.join(profesional);
-		Metamodel metamodel = em.getMetamodel();
-		EntityType<Usuario> Usuario_ = metamodel.entity(Usuario.class);
-		Join profesional = usuario.join(Usuario_.getSingularAttribute("profesional"));
-//	    profesional.
-//		address.on(qb.equal(address.get(entityAddr_.getSingularAttribute("city")), "Ottawa"));
-		
+		CriteriaQuery<Usuario> cq =  cb.createQuery(Usuario.class);
+		Root<Usuario> usuario = cq.from(getEntityClass());
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.isNotNull(usuario.get("codigoProfesional").get("codigo")));
+		cq.select(usuario).where(predicates.toArray(new Predicate[]{}));
 		return em.createQuery(cq).getResultList();
-		//(Fetch<Usuario, Profesional> profesional = usuario.fetch("profesional");
-//		usuario.fetch(Profesional_);
-//		cq.select(usuario);
-//		profesional.
 
 	}
 	
@@ -123,8 +112,31 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 //		return usuarios;
 //	}
 //
-//	
-//	@SuppressWarnings("unchecked")
+
+	
+	public List<Usuario> obtenerMedicos(String clave, Long codUsuarioOrigenSeleccionado){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+		Root<Usuario> usuario = cq.from(entityType);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		Join<Usuario, Profesional> profesional = usuario.join("profesional", JoinType.LEFT);
+		Join<Profesional, Especialidad> especialidad = profesional.join("especialidades", JoinType.LEFT);
+		Join<Usuario, Contacto> contacto = usuario.join("contactos", JoinType.INNER);
+		predicates.add(cb.equal(contacto.get("destino").get("codigo"), codUsuarioOrigenSeleccionado));
+		predicates.add(cb.notEqual(usuario.get("estadoUsuario").get("codigo"), EstadoUsuario.ESTADO_LICENCIA.getCodigo()));
+		
+		clave = StringUtils.limpiarString(clave);
+		Predicate likeApellido = cb.like(functionAccentInsensitivePostgres(cb, cb.upper(usuario.get("apellido").as(String.class))), clave.toUpperCase());
+		Predicate likeNombre =cb.like(functionAccentInsensitivePostgres(cb, cb.upper(usuario.get("nombre").as(String.class))), clave.toUpperCase());
+		Predicate likeDescripcion =cb.like(functionAccentInsensitivePostgres(cb, cb.upper(especialidad.get("descripcion").as(String.class))), clave.toUpperCase());
+		predicates.add(cb.or(likeApellido, likeNombre, likeDescripcion));
+		cq.select(usuario)
+		.where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();
+	}
+	
+
+	
 //	public List<Usuario> obtenerMedicos(String clave, Long codUsuarioOrigenSeleccionado){
 //		Criteria criteria = this.createCriteria();
 //		
@@ -268,35 +280,45 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 			return em.createQuery(cq).getResultList().isEmpty() ? false : true;
 	    }
 
-
+	    public List<Usuario> colegasConMismaEspecialidad(String codigoPrestador, List<Long> codigosEspecialidades, Usuario medicoActual){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), codigoPrestador));
+			predicates.add(cb.isNotNull(usuario.get("profesional").get("codigo")));
+			predicates.add(cb.not(cb.equal(usuario.get("codigo"), medicoActual.getCodigo())));
+			predicates.add(cb.notEqual(usuario.get("estadoUsuario").get("codigo"), EstadoUsuario.ESTADO_LICENCIA.getCodigo()));
+			if(!codigosEspecialidades.isEmpty()){
+				Join<Usuario, Profesional> profesional = usuario.join("profesional", JoinType.INNER);
+				Join<Profesional, Especialidad> especialidad = profesional.join("especialidades", JoinType.LEFT);
+				predicates.add(especialidad.get("codigo").in(codigosEspecialidades));
+				
+			}
+		cq.select(usuario)
+		.where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();
+	    }
 		
-//		TODO	
-//	    public List<Usuario> colegasConMismaEspecialidad(String codigoPrestador, List<Long> codigosEspecialidades){
-//		Criteria criteria = this.createCriteria();
-//		criteria.add(Restrictions.isNotNull("profesional"));
-//		criteria.add(Restrictions.not(Restrictions.eq("codigo", this.getCodigoUsuario())));
-//		criteria.add(Restrictions.eq("prestador.codigo", codigoPrestador));
-//		criteria.add(Restrictions.ne("estadoUsuario.codigo", EstadoUsuario.ESTADO_LICENCIA.getCodigo()));			
-//		if(!codigosEspecialidades.isEmpty()){
-//			criteria.createAlias("profesional", "profesional", CriteriaSpecification.INNER_JOIN);
-//			criteria.createAlias("profesional.especialidades", "especialidades", CriteriaSpecification.LEFT_JOIN);
-//			criteria.add(Restrictions.in("especialidades.codigo", codigosEspecialidades));
-//		}
-//		return criteria.list();
-//	}
-//	
-//	TODO
-//	public List<Usuario> usuariosMedicosPorPrestadorConEspecialidad(String codigoPrestador, List<Long> especialidades){
-//		Criteria criteria = this.createCriteria();
-//		criteria.createAlias("profesional", "profesional");
-//		criteria.add(Restrictions.eq("prestador.codigo", codigoPrestador));
-//		if(especialidades!=null && !especialidades.isEmpty()){
-//			criteria.createAlias("profesional.especialidades", "especialidades");
-//			criteria.add(Restrictions.in("especialidades.codigo", especialidades));
-//		}
-//		return criteria.list();
-//	}
-//	
+	    public List<Usuario> usuariosMedicosPorPrestadorConEspecialidad(String codigoPrestador, List<Long> especialidades){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(cb.equal(usuario.get("prestador").get("codigo"), codigoPrestador));
+			predicates.add(cb.isNotNull(usuario.get("profesional").get("codigo")));
+			if(especialidades!=null && !especialidades.isEmpty()){
+				Join<Usuario, Profesional> profesional = usuario.join("profesional", JoinType.INNER);
+				Join<Profesional, Especialidad> especialidad = profesional.join("especialidades", JoinType.INNER);
+				predicates.add(especialidad.get("codigo").in(especialidades));
+				
+			}
+			cq.select(usuario)
+			.where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getResultList();
+	    
+	    }
+
 //	@SuppressWarnings("unchecked") TODO
 //	public List<Usuario> usuariosPacientesContactadosCon(List<Long> codigosMedicos){
 //		if(codigosMedicos==null || codigosMedicos.isEmpty())
@@ -331,18 +353,19 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 			return em.createQuery(cq).getResultList();
 		}
 
-	    
-//	TODO
-//	public List<Long> getCodigosProfesionalesQueTenganEspecilidad(List<Long> codEspecialidades){
-//		Criteria criteria = this.createCriteria();
-//		criteria.createAlias("profesional", "profesional");
-//		criteria.createAlias("profesional.especialidades", "especialidades");		
-//		criteria.add(Restrictions.in("especialidades.codigo", codEspecialidades));
-//		PropertyProjection propertyProjection = Projections.property("codigo");
-//		criteria.setProjection(propertyProjection);
-//		return criteria.list();
-//	}
-//	
+
+		public List<Long> getCodigosProfesionalesQueTenganEspecilidad(List<Long> codEspecialidades){
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Long> cq =  cb.createQuery(Long.class);
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			Join<Usuario, Profesional> profesional = usuario.join("profesional", JoinType.INNER);
+			Join<Profesional, Especialidad> especialidad = profesional.join("especialidades", JoinType.LEFT);
+			predicates.add(especialidad.get("codigo").in(codEspecialidades));
+			cq.select(usuario.<Long>get("codigo"))
+			.where(predicates.toArray(new Predicate[]{}));
+			return em.createQuery(cq).getResultList();
+		}
 
 		public List<Long> getCodigosProfesionalesPorPrestador(String codPrestador){
 

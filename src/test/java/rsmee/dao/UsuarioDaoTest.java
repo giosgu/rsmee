@@ -27,6 +27,9 @@ import dao.UsuarioDao;
 @RunWith(Arquillian.class)
 public class UsuarioDaoTest extends BaseJPATest {
 
+	private static Long CODIGO_ESPECIALIDAD_TRAUMATOLOGIA = new Long(6);
+	private static Long CODIGO_ESPECIALIDAD_MEDICINA_GRAL = new Long(1);
+	
 	@Inject UsuarioDao usuarioDao;
 	Usuario administrador = null;
 	
@@ -143,4 +146,46 @@ public class UsuarioDaoTest extends BaseJPATest {
 		List<SelectItem> usuarios = usuarioDao.obtenerUsuariosItemSegunPrestador(administrador);
 		Assert.assertTrue(usuarios.size() == 2300);
 	}
+	
+	@Test
+	public void usuariosMedicosPorPrestadorConEspecialidadTest(){
+		List<Long> codigosEspecialidad = new ArrayList<Long>();
+		codigosEspecialidad.add(CODIGO_ESPECIALIDAD_TRAUMATOLOGIA);
+		List<Usuario> usuarios = usuarioDao.usuariosMedicosPorPrestadorConEspecialidad(PRESTADOR_AUSTRAL_SALUD, codigosEspecialidad);
+		//Hay un traumatólogos en Austral
+		Assert.assertTrue(usuarios.size() == 1);
+		//por las dudas, verifico que efectivamente sean traumatólogos!
+		Assert.assertEquals(usuarios.get(0).getProfesional().getEspecialidades().get(0).getCodigo(), CODIGO_ESPECIALIDAD_TRAUMATOLOGIA);
+		//rechequeo, hay 19 medicos con especialidad medicina general
+		codigosEspecialidad = new ArrayList<Long>();
+		codigosEspecialidad.add(CODIGO_ESPECIALIDAD_MEDICINA_GRAL);
+		usuarios = usuarioDao.usuariosMedicosPorPrestadorConEspecialidad(PRESTADOR_AUSTRAL_SALUD, codigosEspecialidad);
+		Assert.assertTrue(usuarios.size() == 19);
+		
+	}
+	
+	@Test
+	public void colegasConMismaEspecialidadTest(){
+		Usuario medicoCinco = usuarioDao.getObjectByID(new Long(5));
+		List<Long> codigoEspecialidades = new ArrayList<Long>();
+		codigoEspecialidades.add(CODIGO_ESPECIALIDAD_MEDICINA_GRAL);
+		List<Usuario> usuarios = usuarioDao.colegasConMismaEspecialidad(PRESTADOR_AUSTRAL_SALUD, codigoEspecialidades, medicoCinco);
+		Assert.assertTrue(usuarios.size() == 18);
+	}
+	
+	@Test
+	public void getCodigosProfesionalesQueTenganEspecilidadTest(){
+		List<Long> codigoEspecialidades = new ArrayList<Long>();
+		codigoEspecialidades.add(CODIGO_ESPECIALIDAD_MEDICINA_GRAL);
+		codigoEspecialidades.add(CODIGO_ESPECIALIDAD_TRAUMATOLOGIA);
+		List<Long> codigoUsuarios = usuarioDao.getCodigosProfesionalesQueTenganEspecilidad(codigoEspecialidades);
+		// hay 20 médicos con ambas especialidades
+		Assert.assertTrue(codigoUsuarios.size() == 20);
+		//verifico que esté el traumatólogo (código 2234
+		Assert.assertTrue(codigoUsuarios.contains(new Long(2234)));
+		//verifico que exista un medicina general
+		Assert.assertTrue(codigoUsuarios.contains(new Long(1063)));
+		
+	}
+	
 }

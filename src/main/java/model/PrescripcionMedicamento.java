@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -41,16 +40,13 @@ public class PrescripcionMedicamento implements Serializable {
 	@JoinColumn(name="codigo_estado", referencedColumnName="codigo", nullable=false)
 	private EstadoPrescripcion estadoPrescripcion;
 	
-	@Column(name = "texto", nullable=true)
-	@Lob
+	@Column(name = "texto", nullable=true, columnDefinition="TEXT")
 	private String mensaje;
 	
-	@Column(name = "texto_respuesta", nullable=true)
-	@Lob
+	@Column(name = "texto_respuesta", nullable=true, columnDefinition="TEXT")
 	private String respuestaMensaje;
 	
-	@Column(name = "texto_respuesta_farmacia", nullable=true)
-	@Lob
+	@Column(name = "texto_respuesta_farmacia", nullable=true, columnDefinition="TEXT")
 	private String respuestaFarmaciaMensaje;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -118,8 +114,7 @@ public class PrescripcionMedicamento implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP) 
 	private Date fechaAnulada;
 	
-	@Column(name="comentario_anulada", nullable=true)
-	@Lob
+	@Column(name="comentario_anulada", nullable=true, columnDefinition="TEXT")
 	private String comentarioAnulada;
 		
 	public Date getFechaAnulada() {

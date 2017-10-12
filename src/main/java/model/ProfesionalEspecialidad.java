@@ -22,6 +22,10 @@ import javax.validation.constraints.Size;
 @Named
 public class ProfesionalEspecialidad implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 888628102044759648L;
 	private Long codigo;
 	private Profesional codigo_profesional;
 	private Especialidad codigoEspecialidad;

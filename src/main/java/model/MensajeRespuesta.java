@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -34,8 +33,7 @@ public class MensajeRespuesta implements Serializable{
 	@JoinColumn(name="codigo_mensaje", referencedColumnName="codigo")
 	private Mensaje mensaje;
 	
-	@Column(name = "texto", nullable=false)
-	@Lob
+	@Column(name = "texto", nullable=false, columnDefinition="TEXT")
 	private String texto;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -22,6 +21,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class Mensaje implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1178005536058219789L;
 
 	public Mensaje(){
 		super();
@@ -41,12 +45,10 @@ public class Mensaje implements Serializable{
 	@JoinColumn(name="origen", referencedColumnName="codigo")
 	private Usuario origen;
 	
-	@Column(name = "texto", nullable=false)
-	@Lob
+	@Column(name = "texto", nullable=false, columnDefinition="TEXT")
 	private String texto;
 	
-	@Column(name="comentario_administrador", nullable=true)
-	@Lob
+	@Column(name="comentario_administrador", nullable=true, columnDefinition="TEXT")
 	private String comenatrioAdministrador;
 
 	private Date fecha;

@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -29,6 +28,11 @@ import javax.persistence.TemporalType;
 @Named
 @Table(name = "archivo_detalle")
 public class ArchivoDetalle implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8227001844953837501L;
 
 	public ArchivoDetalle(){
 		super();
@@ -45,8 +49,7 @@ public class ArchivoDetalle implements Serializable {
 	@JoinColumn(name="codigo_archivo_cabecera", referencedColumnName="codigo", nullable=false)
     private ArchivoCabecera archivoCabecera;
 	
-	@Column(name = "detalle", nullable=false)
-	@Lob
+	@Column(name = "detalle", nullable=false, columnDefinition="TEXT")
 	private String detalle; 
 
 	@ManyToOne(fetch=FetchType.LAZY)

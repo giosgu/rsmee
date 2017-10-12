@@ -21,6 +21,11 @@ import javax.validation.constraints.NotNull;
 public class MensajeDestino implements Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8718815708399871245L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="MensajeDestinoSeqOra")
     @SequenceGenerator(name="MensajeDestinoSeqOra",sequenceName="MENSAJEDESTINO_SEQ", allocationSize=1)

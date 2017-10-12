@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -21,6 +20,11 @@ import javax.persistence.TemporalType;
 @Table(name="auditoria_consulta")
 public class AuditoriaConsulta implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7316974377709512479L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="AuditoriaConsultaSeqOra")
     @SequenceGenerator(name="AuditoriaConsultaSeqOra",sequenceName="AUDITORIA_CONSULTA_SEQ", allocationSize=1)
@@ -43,8 +47,7 @@ public class AuditoriaConsulta implements Serializable{
 	@JoinColumn(name="motivo_rechazo", referencedColumnName="codigo", nullable=true)
 	private MotivoRechazoConsultaAudicion motivoRechazoConsultaAudicion;
 	
-	@Column(name="comentario_auditor", nullable=true)
-	@Lob
+	@Column(name="comentario_auditor", nullable=true, columnDefinition="TEXT")
 	private String comentarioAuditor;
 
 	
