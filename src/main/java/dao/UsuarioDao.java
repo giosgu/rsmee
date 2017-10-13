@@ -16,7 +16,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 
 import model.Contacto;
 import model.Especialidad;
@@ -31,8 +30,7 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 	 * 
 	 */
 	private static final long serialVersionUID = -8262209039280216671L;
-	@Inject
-	public static SingularAttribute<Usuario, Profesional> profesional;
+	@Inject MensajeDestinoDao mensajeDestinoList;
 	
 	public UsuarioDao(){
     	this.entityType = Usuario.class;
@@ -319,7 +317,26 @@ public class UsuarioDao extends BaseDao<Usuario, Long> {
 	    
 	    }
 
-//	@SuppressWarnings("unchecked") TODO
+		public List<Usuario> usuariosPacientesContactadosCon(List<Long> codigosMedicos){
+			if(codigosMedicos==null || codigosMedicos.isEmpty())
+				return new ArrayList<Usuario>();
+			
+			List<Long> codPacientesQueConsultaronMedicos = new ArrayList<Long>();
+			codPacientesQueConsultaronMedicos.addAll(mensajeDestinoList.codPacientesQueConsultaronA(codigosMedicos));
+			if(codPacientesQueConsultaronMedicos.isEmpty())
+				return new ArrayList<Usuario>();
+
+			CriteriaQuery<Usuario> cq =  this.getCriteriaQuery(); 
+			Root<Usuario> usuario = cq.from(entityType);
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(usuario.get("codigo").in(codPacientesQueConsultaronMedicos));
+			cq.select(usuario).where(predicates.toArray(new Predicate[]{}));
+			
+			return em.createQuery(cq).getResultList();
+		}
+		
+
+	   //	@SuppressWarnings("unchecked") TODO
 //	public List<Usuario> usuariosPacientesContactadosCon(List<Long> codigosMedicos){
 //		if(codigosMedicos==null || codigosMedicos.isEmpty())
 //			return new ArrayList<Usuario>();

@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import rsmee.BaseJPATest;
+import dao.MensajeDestinoDao;
 import dao.UsuarioDao;
 
 @RunWith(Arquillian.class)
@@ -31,6 +32,7 @@ public class UsuarioDaoTest extends BaseJPATest {
 	private static Long CODIGO_ESPECIALIDAD_MEDICINA_GRAL = new Long(1);
 	
 	@Inject UsuarioDao usuarioDao;
+	@Inject MensajeDestinoDao mensajeDestinoDao;
 	Usuario administrador = null;
 	
 	@Deployment
@@ -187,5 +189,12 @@ public class UsuarioDaoTest extends BaseJPATest {
 		Assert.assertTrue(codigoUsuarios.contains(new Long(1063)));
 		
 	}
-	
+	@Test
+	public void usuariosPacientesContactadosConTest(){
+		String[] codigoMedicosDestino = "27,518,675,762,1063,1067,1549,1580,1611,1629".split(",");
+		List<Long> codMedicos = arrayStringToListLong(codigoMedicosDestino);
+		List<Long> codigosPacientes = mensajeDestinoDao.codPacientesQueConsultaronA(codMedicos);
+		List<Usuario> usuariosPacientes = usuarioDao.usuariosPacientesContactadosCon(codMedicos);
+		Assert.assertEquals(codigosPacientes.size(), usuariosPacientes.size());
+	}
 }

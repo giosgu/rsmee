@@ -13,12 +13,16 @@ public abstract class BaseJPATest {
 
 	protected static String POM = "pom.xml"; 
 	protected static String COMMONS_LANG_3 = "org.apache.commons:commons-lang3";
+	protected static String COMMONS_COLLECTION = "commons-collections:commons-collections";
+	protected static String COMMONS_BEAN_UTILS = "commons-beanutils:commons-beanutils";
 	protected static String PRESTADOR_AUSTRAL_SALUD = "1"; 
+	
 	
     protected static WebArchive createDeployment(String deploymentUnitName) {
 		File[] libs = Maven.resolver()  
-			    .loadPomFromFile(POM).resolve(COMMONS_LANG_3)  
-			    .withTransitivity().asFile();   
+			    .loadPomFromFile(POM).resolve(COMMONS_LANG_3)
+			    .withTransitivity().asFile();  
+
     	return ShrinkWrap.create(WebArchive.class, deploymentUnitName)
         .addAsResource("persistence-test.xml", "META-INF/persistence.xml")
         .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -29,7 +33,13 @@ public abstract class BaseJPATest {
 		.addPackages(true, "dao")
 		.addPackages(true, "utils")
 		.addPackages(true, "comparator")
-		.addAsLibraries(libs);
+		.addAsLibraries(libs)
+		.addAsLibraries(Maven.resolver()  
+			    .loadPomFromFile(POM).resolve(COMMONS_COLLECTION)
+			    .withTransitivity().asFile())
+		.addAsLibraries(Maven.resolver()  
+			    .loadPomFromFile(POM).resolve(COMMONS_BEAN_UTILS)
+			    .withTransitivity().asFile());
     }
     
     protected List<Long> arrayStringToListLong(String[] origen){

@@ -41,6 +41,7 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 
 import model.ComboEntity;
+
 import comparator.SelectItemComparator;
 
 /**
